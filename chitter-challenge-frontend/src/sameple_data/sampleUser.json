@@ -1,0 +1,25 @@
+{
+    "users": [
+        {
+            "id": "id1",
+            "userEmail": "userEmail1@smh.com",
+            "userUsername": "userUsername1",
+            "userPassword": "userPassword1",
+            "name": "name1"
+        },
+        {
+            "id": "id2",
+            "userEmail": "userEmail2@smh.com",
+            "userUsername": "userUsername2",
+            "userPassword": "userPassword2",
+            "name": "name2"
+        },
+        {
+            "id": "id3",
+            "userEmail": "userEmail3@smh.com",
+            "userUsername": "userUsername3",
+            "userPassword": "userPassword3",
+            "name": "name3"
+        }
+    ]
+}

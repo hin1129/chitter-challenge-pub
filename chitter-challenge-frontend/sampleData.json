@@ -1,0 +1,43 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "traineeName": "traineeName1",
+      "commentDescription": "11111111",
+      "date": "2023-03-26T03:28:30.711Z",
+      "id": 2
+    },
+    {
+      "traineeName": "traineeName1",
+      "commentDescription": "Q2312312312",
+      "date": "2023-03-26T14:14:36.743Z",
+      "id": 3
+    },
+    {
+      "traineeName": "traineeName1",
+      "commentDescription": "Q2312312312",
+      "date": "2023-03-26T14:19:00.577Z",
+      "id": 4
+    },
+    {
+      "traineeName": "traineeName1",
+      "commentDescription": "Q2312312312",
+      "date": "2023-03-26T14:19:14.625Z",
+      "id": 5
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
