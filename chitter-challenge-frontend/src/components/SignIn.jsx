@@ -2,69 +2,50 @@ import React, { useEffect, useRef, useContext } from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie'
 
-// import AuthService from '../services/auth.service';
-// 
-// import AuthContext from '../context/AuthProvider';
-// import axios from '../api/axios';
 
-const SignIn = () => {
-    // post data to server
-    const submitSingInPostRequest = async (user) => {
-        try {
-            // const responseData = await axios.post(`http://localhost:4000/users`, user);
-            const responseData = await axios.post(`http://localhost:8000/signin`, user);
-            return responseData.data;
-        }
-        catch (error) {
-            alert(`sign up - use state error`)
-            console.dir(error)
-        }
-    }
-
+const SignIn = ({ setLoggedInState }) => {
+    const cookies = new Cookies()
     const [email, setEmail] = useState(``);
-    const [username, setUsername] = useState(``);
     const [password, setPassword] = useState(``);
+    const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
 
-    // doesnt work
-    // const { setAuth } = useContext(AuthContext);
-    // const userRef = useRef()
-    // const errorRef = useRef()
-    // const [errorMessage, setErrorMessage] = useState()
-    const [success, setSuccess] = useState(`false`);
-    // useEffect(() => {
-    //     userRef.current.focus()
-    // }, [])
-    // useEffect(() => {
-    //     setErrorMessage('')
-    // }, [username, password])
 
-    // const handleSignIn = async (event) => {
-    //     event.preventDefault();
-    //     // 
-    //     setUsername('')
-    //     setPassword('')
-    //     setSuccess(true)
-    // }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setLoggedIn(true);
+        }
+    }, []);
 
-
-    // handle form data when submitted
     const handleSignIn = async (event) => {
         event.preventDefault();
-
-        // doesnt work
-        const user = { username, password }
         try {
-            const response = await submitSingInPostRequest(user)
-            if (response) {
-                setSuccess(true)
-                navigate('/')
-                alert(`handleSignIn if block - loggedIn - ${success}`)
-                console.log(`handleSignIn if block - ${success}`)
-            }
-            else { console.log(`handleSignIn else block - ${success}`) }
-        } catch (error) { console.dir(error) }
+            const response = await axios.post("http://localhost:8000/signin", { email, password, });
+            console.log(response);
+            setLoggedIn(true)
+            // cookie accessible across all pages of website
+            cookies.set("TOKEN", response.data.token, { path: "/", })
+            // set token and user status to localStorage
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('loggedIn', true);
+            setLoggedInState(true)
+            navigate('/')
+        }
+        catch (error) {
+            console.log(error)
+            error = new Error()
+        }
+    };
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('loggedIn');
+        cookies.remove('TOKEN');
+        setLoggedIn(false);
+        console.log("just logged out")
+        setLoggedInState(false)
     }
 
     // for validation
@@ -77,15 +58,14 @@ const SignIn = () => {
             <br />SignIn
 
             <form onSubmit={handleSignIn}>
-                <label htmlFor="username">username:</label>
+                <label htmlFor="email">email:</label>
                 <input
-                    type="username"
-                    name="username"
-                    id="username"
-                    value={username}
-                    onChange={event => setUsername(event.target.value)}
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={event => setEmail(event.target.value)}
                     validations={[required]}
-                // ref={userRef}
                 />
                 <br />
 
@@ -97,13 +77,21 @@ const SignIn = () => {
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                     validations={[required]}
-                // ref={userRef}
                 />
 
-                <br />
-                <input type="submit" value="sign in" />
+                {loggedIn ? (
+                    <>
+                        <p>you are logged in successfully</p>
+                        <button onClick={handleLogout}>Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <br />
+                        <input type="submit" value="sign in" />
+                        <p>you are not logged in</p>
+                    </>
+                )}
             </form>
-
         </div>
     )
 }

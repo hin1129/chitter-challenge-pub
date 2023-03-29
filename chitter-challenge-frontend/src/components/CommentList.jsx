@@ -13,7 +13,7 @@ const CommentList = () => {
             // const response = await axios.get(`http://localhost:4000/comments`)
             const response = await axios.get(`http://localhost:8000/`)
             setCommentList(response.data)
-            console.log(response.data)
+            // console.log(response.data)
         }
         catch (error) {
             alert(`use state error`)

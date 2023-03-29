@@ -42,6 +42,26 @@ const signInAuthService = async (username, password) => {
     }
 };
 
+// // post request, save jwt to local storage - with email
+// const signInAuthService = async (email, password) => {
+//     try {
+//         const response = await axios.post(`${API_URL}/signin`, {
+//             email,
+//             password,
+//         });
+//         const data = await response.data;
+//         console.log(data);
+
+//         if (data.accessToken) {
+//             localStorage.setItem(`user`, JSON.stringify(response.data));
+//         }
+//         return (data);
+//     }
+//     catch (error) {
+//         return { error };
+//     }
+// };
+
 // remove jwt from local storage
 const signOutAuthService = () => {
     localStorage.removeItem(`user`);

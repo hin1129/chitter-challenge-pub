@@ -12,7 +12,6 @@ router.get(`/`, (request, response) => {
         })
 })
 
-// handle POST requests to /postcomment
 router.post('/postcomment', (request, response) => {
     const traineeName = request.body.traineeName;
     const commentDescription = request.body.commentDescription;
