@@ -23,7 +23,7 @@ React Structure
 
 Component Hierarchy - version1
 Components   || Colour || Content
-header       || red    || title, loading status
+header       || red    || title, loading status, nav bar
 postComment  || white  || user input content
 commentList  || pink   || reverse chronological order, visible when logged out
 comment      || yellow || time, trainee name, user handle
@@ -44,7 +44,6 @@ Tests
 ============================================================
 ============================================================
 Other
-cant get login.jsx working
-ran out of time for testing
+
 ============================================================
 ============================================================
