@@ -1,37 +1,32 @@
-import React, { useEffect, useRef, useContext } from 'react'
-import { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie'
 
-
-const SignIn = ({ setLoggedInState }) => {
+const SignIn = ({ setLogInState }) => {
     const cookies = new Cookies()
     const [email, setEmail] = useState(``);
     const [password, setPassword] = useState(``);
-    const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
 
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setLoggedIn(true);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         setLoggedInState(true);
+    //     }
+    // }, []);
 
     const handleSignIn = async (event) => {
         event.preventDefault();
         try {
             const response = await axios.post("http://localhost:8000/signin", { email, password, });
             console.log(response);
-            setLoggedIn(true)
-            // cookie accessible across all pages of website
+            // cookies (in cookies session) accessible across all pages of website
             cookies.set("TOKEN", response.data.token, { path: "/", })
             // set token and user status to localStorage
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('loggedIn', true);
-            setLoggedInState(true)
+            setLogInState(true)
             navigate('/')
         }
         catch (error) {
@@ -39,14 +34,6 @@ const SignIn = ({ setLoggedInState }) => {
             error = new Error()
         }
     };
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedIn');
-        cookies.remove('TOKEN');
-        setLoggedIn(false);
-        console.log("just logged out")
-        setLoggedInState(false)
-    }
 
     // for validation
     const required = value => {
@@ -79,7 +66,10 @@ const SignIn = ({ setLoggedInState }) => {
                     validations={[required]}
                 />
 
-                {loggedIn ? (
+                <br />
+                <input type="submit" value="sign in" />
+
+                {/* {loggedIn ? (
                     <>
                         <p>you are logged in successfully</p>
                         <button onClick={handleLogout}>Logout</button>
@@ -90,7 +80,7 @@ const SignIn = ({ setLoggedInState }) => {
                         <input type="submit" value="sign in" />
                         <p>you are not logged in</p>
                     </>
-                )}
+                )} */}
             </form>
         </div>
     )

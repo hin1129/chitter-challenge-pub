@@ -29,6 +29,7 @@ import bcrypt from 'bcryptjs'
 router.post("/signIn", (request, response) => {
     const email = request.body.email;
     const password = request.body.password;
+    const username = request.body.username;
 
     // check if email exists
     User.findOne({ email })
@@ -54,11 +55,12 @@ router.post("/signIn", (request, response) => {
                         { expiresIn: "24h" }
                     );
 
-                    // successful
+                    // successful, response.data array in browser console
                     response.status(200).send({
                         message: "login successful",
                         email: user.email,
-                        token
+                        username: user.username,
+                        token // should not be displayed in browser console
                     });
                 })
                 // if password not match
@@ -69,6 +71,7 @@ router.post("/signIn", (request, response) => {
                     });
                 });
         })
+
         // if email not exist
         .catch((error) => {
             response.status(404).send({

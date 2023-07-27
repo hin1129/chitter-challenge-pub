@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 
 const PostComment = () => {
+    const navigate = useNavigate();
+
     // post data to server
     const submitCommentPostRequest = async (comment) => {
         try {
@@ -20,7 +23,6 @@ const PostComment = () => {
 
     // set value
     const [commentDescription, setCommentDescription] = useState(``)
-    // const [user, setUser] = useState(``)
 
     // form submit
     const handleSubmit = async (event) => {
@@ -29,6 +31,7 @@ const PostComment = () => {
         const createCommentObject = { traineeName: "traineeName1", commentDescription, date: new Date() }
         await submitCommentPostRequest(createCommentObject);
         console.log(createCommentObject)
+        navigate('/')
     }
 
     return (

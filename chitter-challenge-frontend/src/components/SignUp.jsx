@@ -1,12 +1,11 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { isEmail } from 'validator'
 import authService from '../services/auth.service'
 
 const SignUp = () => {
     // post data to server
-    const submitSingUpPostRequest = async (user) => {
+    const submitSignUpPostRequest = async (user) => {
         try {
             // const responseData = await axios.post(`http://localhost:4000/users`, user);
             const response = await axios.post(`http://localhost:8000/signup`, user);
@@ -31,7 +30,7 @@ const SignUp = () => {
         event.preventDefault();
         // pass object to post request
         const createSignUpObject = { fullName, username, email, password }
-        await submitSingUpPostRequest(createSignUpObject);
+        await submitSignUpPostRequest(createSignUpObject);
         console.log(createSignUpObject)
     }
 

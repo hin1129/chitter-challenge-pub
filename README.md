@@ -1,19 +1,9 @@
 Chitter Challenge
 =================
-
-* Feel free to use Google, your notes, books, etc. but work on your own
-* If you refer to the solution of another coach or trainee, please put a link to that in your README
-* If you have a partial solution, **still check in a partial solution**
-* You must submit your work by 9:30am Monday morning
-
 Challenge:
 -------
 
-As usual please start by forking this repo.
-
 We are going to write a small twitter clone that will allow users to post messages to a public wall.
-
-Good luck and let the chitter begin!
 
 Features:
 -------

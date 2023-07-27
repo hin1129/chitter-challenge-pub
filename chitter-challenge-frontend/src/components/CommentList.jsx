@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Comment from './Comment'
 import axios from 'axios'
-import SampleComment from '../sameple_data/sampleData.json'
+import Comment from './Comment'
 
 const CommentList = () => {
     // store server data
@@ -13,7 +12,7 @@ const CommentList = () => {
             // const response = await axios.get(`http://localhost:4000/comments`)
             const response = await axios.get(`http://localhost:8000/`)
             setCommentList(response.data)
-            // console.log(response.data)
+            console.log(response.data)
         }
         catch (error) {
             alert(`use state error`)
@@ -46,7 +45,7 @@ const CommentList = () => {
         currentComment => {
             return (
                 // <Comment commentProps={currentComment} key={currentComment.id} />
-                <Comment commentProps={currentComment} key={currentComment._id} />
+                <Comment commentListProps={currentComment} key={currentComment._id} />
             )
         }
     )
@@ -54,7 +53,6 @@ const CommentList = () => {
     return (
         <div>
             {/* {Comment} */}
-            {/* {sampleComment} */}
             {allComments}
         </div>
     )

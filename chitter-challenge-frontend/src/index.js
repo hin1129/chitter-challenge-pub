@@ -10,19 +10,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
-  //   <App />
-  // </React.StrictMode>
-
-  // < BrowserRouter >
-  //   <AuthProvider>
-  //     <App />
-  //   </AuthProvider>
-  // </ BrowserRouter >
-
+  // <React.StrictMode> //spot potential problems in your application during development (wont work in production mode)
   < BrowserRouter >
+    {/* <AuthProvider> */}
     <App />
+    {/* </AuthProvider> */}
   </ BrowserRouter >
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
