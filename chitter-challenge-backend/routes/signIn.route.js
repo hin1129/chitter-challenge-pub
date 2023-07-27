@@ -4,28 +4,6 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-
-// // v1
-// router.post('/signIn', (request, response) => {
-//     // User.find()
-//     //     .then((user) => {
-//     //         response.status(200).json(user);
-//     //     })
-//     //     .catch((error) => {
-//     //         response.status(400).json('error: ' + error)
-//     //     })
-//     const email = request.body.email;
-//     const password = request.body.password;
-//     User.findOne({email})
-//         .then((user) => {
-//             response.status(200).json(user);
-//         })
-//         .catch((error) => {
-//             response.status(400).json('error: ' + error)
-//         })
-// })
-
-// v2
 router.post("/signIn", (request, response) => {
     const email = request.body.email;
     const password = request.body.password;
