@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { isEmail } from 'validator'
-import authService from '../services/auth.service'
 
 const SignUp = () => {
     // post data to server

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Comment = ({ commentListProps }) => {
     // retrieve data from comment-list
-    const myTraineeName = commentListProps.traineeName;
+    const myUsername = commentListProps.username;
     const myCommentDescription = commentListProps.commentDescription;
     const myCommentDateCreated = commentListProps.commentDateCreated; //displaying nothing
     const date = new Date(commentListProps.date)
@@ -11,11 +11,10 @@ const Comment = ({ commentListProps }) => {
         <div >
             <br />
             <p>
-                {myTraineeName}<br />
+                {myUsername}<br />
                 {myCommentDescription}<br />
                 {myCommentDateCreated}
                 {date.toLocaleString()}<br />
-                {date.toUTCString()}
             </p>
         </div>
     )

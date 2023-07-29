@@ -13,12 +13,12 @@ router.get(`/`, (request, response) => {
 })
 
 router.post('/postcomment', (request, response) => {
-    const traineeName = request.body.traineeName;
+    const username = request.body.username;
     const commentDescription = request.body.commentDescription;
     const date = request.body.date;
 
     const newComment = new Comment({
-        traineeName,
+        username,
         commentDescription,
         date,
     });

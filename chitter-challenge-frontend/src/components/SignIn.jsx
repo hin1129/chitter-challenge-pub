@@ -9,13 +9,6 @@ const SignIn = ({ setLogInState }) => {
     const [password, setPassword] = useState(``);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         setLoggedInState(true);
-    //     }
-    // }, []);
-
     const handleSignIn = async (event) => {
         event.preventDefault();
         try {
@@ -26,6 +19,7 @@ const SignIn = ({ setLogInState }) => {
             // set token and user status to localStorage
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('loggedIn', true);
+            localStorage.setItem('username', response.data.username);
             setLogInState(true)
             navigate('/')
         }

@@ -17,16 +17,14 @@ function App() {
     if (isLoggedIn === 'true') { setLogInState(true) }
 
     // const token = localStorage.getItem('token');
-    // if (token) {
-    //   setLoggedIn(true);
-    // }
+    // if (token) { setLogInState(true); }
   }, [])
 
   const cookies = new Cookies()
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('loggedIn');
-    localStorage.removeItem('email');
+    localStorage.removeItem('username');
     cookies.remove('TOKEN');
     setLogInState(false);
     console.log("just logged out")

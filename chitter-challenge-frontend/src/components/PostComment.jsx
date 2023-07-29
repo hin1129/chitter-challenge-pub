@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
-
 const PostComment = () => {
     const navigate = useNavigate();
 
@@ -28,7 +27,8 @@ const PostComment = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // pass object to post request
-        const createCommentObject = { traineeName: "traineeName1", commentDescription, date: new Date() }
+        const username = localStorage.getItem("username")
+        const createCommentObject = { username: username, commentDescription, date: new Date() }
         await submitCommentPostRequest(createCommentObject);
         console.log(createCommentObject)
         navigate('/')
