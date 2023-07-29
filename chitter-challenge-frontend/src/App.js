@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -37,13 +37,33 @@ function App() {
 
       <Routes>
         <Route path="/" element={<CommentList />} />
-        <Route path="/postcomment" element={<PostComment />} />
+        {/* <Route path="/postcomment" element={<PostComment />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn setLogInState={setLogInState} />} />
+        <Route path="/signin" element={<SignIn setLogInState={setLogInState} />} /> */}
+
+
+        <Route
+          path="/postcomment"
+          element={logInState ? <PostComment /> : <Navigate to="/signin" />}
+        />
+
+        <Route
+          path="/signup"
+          element={logInState ? <Navigate to="/" /> : <SignUp />}
+        />
+
+        <Route
+          path="/signin"
+          element={logInState ? (
+            <Navigate to="/" />
+          ) : (
+            <SignIn setLogInState={setLogInState} />
+          )}
+        />
       </Routes>
 
       <Footer />
-    </div>
+    </div >
   );
 }
 

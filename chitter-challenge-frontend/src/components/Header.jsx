@@ -24,13 +24,13 @@ const Header = ({ logInState, handleLogout }) => {
             <Link to="/" >Home</Link><br />
             {logInState ? (
                 <>
-                    <Link to="/postcomment">post comment</Link><br />
+                    <Link to="/postcomment">Post comment</Link><br />
                     <button onClick={handleLogout}>Logout</button><br />
                 </>
             ) : (
                 <>
-                    <Link to="/signup">sign up</Link><br />
-                    <Link to="/signin">sign in</Link>
+                    <Link to="/signup">Sign up</Link><br />
+                    <Link to="/signin">Sign in</Link>
                 </>
             )}
         </header>
