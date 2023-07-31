@@ -11,9 +11,7 @@ const Header = ({ logInState, handleLogout }) => {
         }, 1000)
 
         // stop updating if component unmounted
-        return () => {
-            clearInterval(interval)
-        }
+        return () => { clearInterval(interval) }
     }, [])
 
     return (

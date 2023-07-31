@@ -37,10 +37,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<CommentList />} />
-        {/* <Route path="/postcomment" element={<PostComment />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn setLogInState={setLogInState} />} /> */}
-
+        {/* <Route path="/" element={< />} /> */}
 
         <Route
           path="/postcomment"

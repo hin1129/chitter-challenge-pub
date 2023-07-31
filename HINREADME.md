@@ -24,7 +24,7 @@ React Structure
 
 Component Hierarchy - version1
 Components   || Colour || Content
-header       || red    || title, loading status, nav bar
+header       || red    || title, nav bar, time
 postComment  || white  || user input content
 commentList  || pink   || reverse chronological order, visible when logged out
 comment      || yellow || time, trainee name, user handle

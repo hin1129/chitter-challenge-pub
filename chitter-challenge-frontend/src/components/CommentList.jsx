@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import axios from 'axios'
 import Comment from './Comment'
 
@@ -7,7 +8,7 @@ const CommentList = ({ loggedInState }) => {
     const [commentList, setCommentList] = useState([])
 
     // get data from server
-    const getCommentList = async () => {
+    const getCommentListGetRequest = async () => {
         try {
             // const response = await axios.get(`http://localhost:4000/comments`)
             const response = await axios.get(`http://localhost:8000/`)
@@ -15,21 +16,47 @@ const CommentList = ({ loggedInState }) => {
             console.log(response.data)
         }
         catch (error) {
-            alert(`use state error`)
+            alert(`comment list - use state error`)
             console.dir(error)
         }
     }
 
-    // rerun server if second argument changes
+    // rerun server if login state changes
     useEffect(() => {
-        getCommentList()
+        getCommentListGetRequest()
     }, [loggedInState])
 
-    // pass data to comment component, in reversed order
-    const allComments = commentList.reverse().map(
+    // delete comment
+    const handleDeleteComment = (deleteCommentID) => {
+        // previous state value of comment list
+        setCommentList((previousComments) => {
+            // iterate existing array, skip deleteCommentID, create array
+            return previousComments.filter(
+                (comment) => comment._id !== deleteCommentID
+            );
+        })
+    }
+
+    // edit comment
+    const handleEditComment = (editedComment) => {
+        setCommentList((previousComments) => {
+            // Map over the existing array and update the edited comment
+            return previousComments.map(
+                (comment) => comment._id === editedComment._id ? editedComment : comment
+            );
+        });
+    };
+
+    // pass data to comment component
+    const allComments = commentList.map(
         currentComment => {
             return (
-                <Comment commentListProps={currentComment} key={currentComment._id} />
+                <Comment
+                    commentListProps={currentComment}
+                    key={currentComment._id}
+                    onDelete={handleDeleteComment}
+                    onEdit={handleEditComment}
+                />
             )
         }
     )
