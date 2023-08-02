@@ -10,13 +10,13 @@ const Header = ({ logInState, handleLogout }) => {
             setCurrentTime(new Date())
         }, 1000)
 
-        // stop updating if component unmounted
+        // stop if component unmounted
         return () => { clearInterval(interval) }
     }, [])
 
     return (
         <header>
-            <h1>chitter challenge</h1>
+            <h1>Chitter Challenge</h1>
             <h2>{currentTime.toLocaleTimeString()}</h2>
 
             <Link to="/" >Home</Link><br />

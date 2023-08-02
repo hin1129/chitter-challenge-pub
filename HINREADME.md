@@ -3,7 +3,7 @@
 Installing
 Forked chitter-challenge folder from DF to my own GitHub account, then cloned the folder onto my local machine.-
 On VSC terminal, inside chitter-challenge folder, set up the library with the following commands:
-for frontend: npm i axios dotenv --save react-router-dom
+for frontend: npm i axios dotenv --save react-router-dom universal-cookie
 for backend: npm i body-parser cors dotenv express mongoose nodemon chai chai-http mocha
 
 Modified package.json:

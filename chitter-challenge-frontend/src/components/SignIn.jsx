@@ -4,9 +4,9 @@ import axios from 'axios';
 import Cookies from 'universal-cookie'
 
 const SignIn = ({ setLogInState }) => {
-    const cookies = new Cookies()
     const [email, setEmail] = useState(``);
     const [password, setPassword] = useState(``);
+    const cookies = new Cookies()
     const navigate = useNavigate();
 
     const handleSignIn = async (event) => {
@@ -16,7 +16,7 @@ const SignIn = ({ setLogInState }) => {
             console.log(response);
             // cookies (in cookies session) accessible across all pages of website
             cookies.set("TOKEN", response.data.token, { path: "/", })
-            // set token and user status to localStorage
+            // store token and user status to localStorage
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('loggedIn', true);
             localStorage.setItem('username', response.data.username);
@@ -24,12 +24,13 @@ const SignIn = ({ setLogInState }) => {
             navigate('/')
         }
         catch (error) {
+            alert(`SignIn - handleSignIn`)
             console.log(error)
             error = new Error()
         }
     };
 
-    // for validation
+    // validation
     const required = value => {
         if (!value) { return (<div role="alert">cant be empty</div>); }
     };
@@ -62,19 +63,6 @@ const SignIn = ({ setLogInState }) => {
 
                 <br />
                 <input type="submit" value="sign in" />
-
-                {/* {loggedIn ? (
-                    <>
-                        <p>you are logged in successfully</p>
-                        <button onClick={handleLogout}>Logout</button>
-                    </>
-                ) : (
-                    <>
-                        <br />
-                        <input type="submit" value="sign in" />
-                        <p>you are not logged in</p>
-                    </>
-                )} */}
             </form>
         </div>
     )

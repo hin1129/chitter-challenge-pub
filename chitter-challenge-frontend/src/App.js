@@ -13,11 +13,11 @@ function App() {
   const [logInState, setLogInState] = useState(false);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('loggedIn');
-    if (isLoggedIn === 'true') { setLogInState(true) }
+    // const isLoggedIn = localStorage.getItem('loggedIn');
+    // if (isLoggedIn === 'true') { setLogInState(true) }
 
-    // const token = localStorage.getItem('token');
-    // if (token) { setLogInState(true); }
+    const token = localStorage.getItem('token');
+    if (token) { setLogInState(true); }
   }, [])
 
   const cookies = new Cookies()

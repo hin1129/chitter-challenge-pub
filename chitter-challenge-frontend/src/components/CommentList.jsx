@@ -4,10 +4,8 @@ import axios from 'axios'
 import Comment from './Comment'
 
 const CommentList = ({ loggedInState }) => {
-    // store server data
     const [commentList, setCommentList] = useState([])
 
-    // get data from server
     const getCommentListGetRequest = async () => {
         try {
             // const response = await axios.get(`http://localhost:4000/comments`)
@@ -16,7 +14,7 @@ const CommentList = ({ loggedInState }) => {
             console.log(response.data)
         }
         catch (error) {
-            alert(`comment list - use state error`)
+            alert(`CommentList - GetRequest`)
             console.dir(error)
         }
     }

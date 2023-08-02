@@ -3,7 +3,11 @@ import axios from 'axios'
 import { isEmail } from 'validator'
 
 const SignUp = () => {
-    // post data to server
+    const [fullName, setFullName] = useState(``)
+    const [username, setUsername] = useState(``)
+    const [email, setEmail] = useState(``)
+    const [password, setPassword] = useState(``)
+
     const submitSignUpPostRequest = async (user) => {
         try {
             // const responseData = await axios.post(`http://localhost:4000/users`, user);
@@ -11,18 +15,12 @@ const SignUp = () => {
             return (response.data);
         }
         catch (error) {
-            alert(`sign up - use state error`)
+            alert(`SignUp - PostRequest`)
             console.dir(error)
             console.error(error);
             throw error;
         }
     }
-
-    // set form data
-    const [fullName, setFullName] = useState(``)
-    const [username, setUsername] = useState(``)
-    const [email, setEmail] = useState(``)
-    const [password, setPassword] = useState(``)
 
     // handle form data when submitted
     const handleSignUp = async (event) => {
