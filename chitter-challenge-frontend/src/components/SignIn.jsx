@@ -26,7 +26,6 @@ const SignIn = ({ setLogInState }) => {
         catch (error) {
             alert(`SignIn - handleSignIn`)
             console.log(error)
-            error = new Error()
         }
     };
 

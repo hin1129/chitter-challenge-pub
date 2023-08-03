@@ -8,7 +8,6 @@ const CommentList = ({ loggedInState }) => {
 
     const getCommentListGetRequest = async () => {
         try {
-            // const response = await axios.get(`http://localhost:4000/comments`)
             const response = await axios.get(`http://localhost:8000/`)
             setCommentList(response.data)
             console.log(response.data)
@@ -38,7 +37,7 @@ const CommentList = ({ loggedInState }) => {
     // edit comment
     const handleEditComment = (editedComment) => {
         setCommentList((previousComments) => {
-            // Map over the existing array and update the edited comment
+            // iterate existing array and update the edited comment
             return previousComments.map(
                 (comment) => comment._id === editedComment._id ? editedComment : comment
             );

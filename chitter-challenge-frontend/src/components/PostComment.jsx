@@ -8,7 +8,6 @@ const PostComment = () => {
 
     const submitCommentPostRequest = async (comment) => {
         try {
-            // const response = await axios.post(`http://localhost:4000/comments`, comment);
             const response = await axios.post(`http://localhost:8000/postcomment`, comment);
             return (response.data);
         }

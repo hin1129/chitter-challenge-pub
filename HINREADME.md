@@ -11,7 +11,7 @@ Modified package.json:
 "test": "mocha --timeout 10000 --exit"
 
 To run program (both front/backend): "nodemon"
-To run database: "mongodb.com"
+To connect to database: "mongodb.com"
 ============================================================
 ============================================================
 Frontend
@@ -22,14 +22,14 @@ React Structure
 4 = Identifying Where State Should Live
 5 = Adding Inverse Data Flow
 
-Component Hierarchy - version1
+Component Hierarchy - version
 Components   || Colour || Content
-header       || red    || title, nav bar, time
-postComment  || white  || user input content
-commentList  || pink   || reverse chronological order, visible when logged out
-comment      || yellow || time, trainee name, user handle
-signup       || black  || email/username(unique), password/name
-login/logout || red    || username/password
+header       || red    || title, nav bar, logout button, clock
+postComment  || white  || post new comment
+commentList  || pink   || display comments
+comment      || yellow || username, comment description, time, user handle - edit/delete
+signup       || black  || create new user account (email/username/password/name), sign up button
+login        || red    || email/password, sign in button
 footer       || green  || text
 ============================================================
 ============================================================
@@ -40,7 +40,7 @@ Comment = comment description, username, date
 User = full name, username, email, password
 
 Routes = deal with clients http requests
-Comment = post new comment, retrieve existing comments
+Comment = post new comment, retrieve existing comments in reverse order, delete comment, update existing comment
 Signin = create new user account, apply validation and encryption 
 Signup = retrieve existing user account, apply encryption
 ============================================================

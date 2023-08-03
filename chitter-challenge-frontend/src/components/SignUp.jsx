@@ -7,51 +7,78 @@ const SignUp = () => {
     const [username, setUsername] = useState(``)
     const [email, setEmail] = useState(``)
     const [password, setPassword] = useState(``)
+    const [errors, setErrors] = useState({})
+
+    const restrictedWords = ['admin', 'root', 'guest', 'test'];
 
     const submitSignUpPostRequest = async (user) => {
         try {
-            // const responseData = await axios.post(`http://localhost:4000/users`, user);
             const response = await axios.post(`http://localhost:8000/signup`, user);
             return (response.data);
         }
         catch (error) {
             alert(`SignUp - PostRequest`)
-            console.dir(error)
-            console.error(error);
-            throw error;
+            // console.dir(error)
+            // console.error(error);
+            // throw error;
+            const errorResponse = error.response.data;
+            if (errorResponse.error === 'Email already exists') {
+                setErrors({ ...errors, email: errorResponse.error });
+            }
+            else if (errorResponse.error === 'Username already exists') {
+                setErrors({ ...errors, username: errorResponse.error });
+            }
         }
     }
 
-    // handle form data when submitted
+    // handle form data
     const handleSignUp = async (event) => {
         event.preventDefault();
+
+        // validation
+        const validationErrors = {}
+
+        const fullNameIsRestrictedWord = restrictedWords.some(word => fullName.toLowerCase().includes(word.toLowerCase()));
+        if (!fullName) {
+            validationErrors.fullName = "Full name is empty"
+        }
+        else if (fullNameIsRestrictedWord) {
+            validationErrors.fullName = "full name contains restricted words"
+        }
+
+        const usernameIsRestrictedWord = restrictedWords.some((word) => username.toLowerCase().includes(word.toLowerCase()))
+        if (username.length < 3 || username.length > 20) {
+            validationErrors.username = "Username must be between 3-20 characters"
+        }
+        else if (usernameIsRestrictedWord) {
+            validationErrors.username = "username contains restricted words"
+        }
+
+        if (!isEmail(email)) {
+            validationErrors.email = "Not a valid email"
+        }
+
+        if (password.length < 6 || password.length > 40) {
+            validationErrors.password = "Password must be between 6-40 characters";
+        }
+        else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]/.test(password)) {
+            validationErrors.password = "Password must include at least 1 upper case letter, 1 lower case letter, 1 number, and 1 symbol";
+        }
+
+        setErrors(validationErrors)
+
+        // return errors if true
+        if (Object.keys(validationErrors).length > 0) { return }
+
+        // reset previous validation errors
+        setErrors({})
+
         // pass object to post request
         const createSignUpObject = { fullName, username, email, password }
         await submitSignUpPostRequest(createSignUpObject);
         console.log(createSignUpObject)
+        alert("Sign Up Successfully")
     }
-
-    // for validation
-    const required = value => {
-        if (!value) { return (<div role="alert">cant be empty</div>); }
-    };
-    const vusername = value => {
-        if (value.length < 3 || value.length > 20) {
-            return (
-                <div role="alert">username must be between 3-20 characters</div>
-            );
-        }
-    };
-    const vemail = value => {
-        if (!isEmail(value)) { return (<div role="alert">not a valid email</div>); }
-    };
-    const vpassword = value => {
-        if (value.length < 6 || value.length > 40) {
-            return (
-                <div role="alert">password must be between 6-40 characters</div>
-            );
-        }
-    };
 
     return (
         <div>
@@ -65,9 +92,9 @@ const SignUp = () => {
                     id="fullName"
                     value={fullName}
                     onChange={event => setFullName(event.target.value)}
-                    validations={[required]}
                 />
                 <br />
+                {errors.fullName && <div role="alert">{errors.fullName}</div>}
 
                 <label htmlFor="username">username:</label>
                 <input
@@ -76,9 +103,9 @@ const SignUp = () => {
                     id="username"
                     value={username}
                     onChange={event => setUsername(event.target.value)}
-                    validations={[required, vusername]}
                 />
                 <br />
+                {errors.username && <div role="alert">{errors.username}</div>}
 
                 <label htmlFor="email">email:</label>
                 <input
@@ -87,9 +114,9 @@ const SignUp = () => {
                     id="email"
                     value={email}
                     onChange={event => setEmail(event.target.value)}
-                    validations={[required, vemail]}
                 />
                 <br />
+                {errors.email && <div role="alert">{errors.email}</div>}
 
                 <label htmlFor="password">password:</label>
                 <input
@@ -98,8 +125,8 @@ const SignUp = () => {
                     id="password"
                     value={password}
                     onChange={event => setPassword(event.target.value)}
-                    validations={[required, vpassword]}
                 />
+                {errors.password && <div role="alert">{errors.password}</div>}
 
                 <br />
                 <input type="submit" value="sign up" />
