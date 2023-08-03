@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie'
 const SignIn = ({ setLogInState }) => {
     const [email, setEmail] = useState(``);
     const [password, setPassword] = useState(``);
+    const [errorMessage, setErrorMessage] = useState(null);
     const cookies = new Cookies()
     const navigate = useNavigate();
 
@@ -26,6 +27,12 @@ const SignIn = ({ setLogInState }) => {
         catch (error) {
             alert(`SignIn - handleSignIn`)
             console.log(error)
+
+            const errorResponse = error.response.data;
+            if (error.response) {
+                setErrorMessage(errorResponse.message || "An unknown error occurred.");
+            }
+            else { setErrorMessage("An unknown error occurred."); }
         }
     };
 
@@ -60,6 +67,7 @@ const SignIn = ({ setLogInState }) => {
                     validations={[required]}
                 />
 
+                {errorMessage && <div role="alert">{errorMessage}</div>}
                 <br />
                 <input type="submit" value="sign in" />
             </form>

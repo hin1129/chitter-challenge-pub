@@ -18,9 +18,7 @@ const SignUp = () => {
         }
         catch (error) {
             alert(`SignUp - PostRequest`)
-            // console.dir(error)
-            // console.error(error);
-            // throw error;
+            // error responses from server
             const errorResponse = error.response.data;
             if (errorResponse.error === 'Email already exists') {
                 setErrors({ ...errors, email: errorResponse.error });
@@ -77,8 +75,19 @@ const SignUp = () => {
         const createSignUpObject = { fullName, username, email, password }
         await submitSignUpPostRequest(createSignUpObject);
         console.log(createSignUpObject)
-        alert("Sign Up Successfully")
+        alert("Sign Up form submitted")
     }
+
+    // clear errors when inputs change
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+        setErrors({ ...errors, username: '' });
+    };
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+        setErrors({ ...errors, email: '' });
+    };
 
     return (
         <div>
@@ -102,7 +111,7 @@ const SignUp = () => {
                     name="username"
                     id="username"
                     value={username}
-                    onChange={event => setUsername(event.target.value)}
+                    onChange={handleUsernameChange}
                 />
                 <br />
                 {errors.username && <div role="alert">{errors.username}</div>}
@@ -113,7 +122,7 @@ const SignUp = () => {
                     name="email"
                     id="email"
                     value={email}
-                    onChange={event => setEmail(event.target.value)}
+                    onChange={handleEmailChange}
                 />
                 <br />
                 {errors.email && <div role="alert">{errors.email}</div>}

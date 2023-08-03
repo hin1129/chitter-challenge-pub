@@ -15,5 +15,4 @@ const commentSchema = new mongoose.Schema({
 );
 
 const CommentDB = mongoose.model(`comment`, commentSchema);
-// const CommentDB = mongoose.model(`commentdb`, commentSchema);
 export default CommentDB;

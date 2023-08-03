@@ -13,15 +13,16 @@ router.post('/signup', async (request, response) => {
         const isEmailExist = await User.findOne({ email });
         const isUsernameExist = await User.findOne({ username });
 
-        if (isEmailExist || isUsernameExist) {
-            const errorResponse = {};
-            if (isEmailExist) {
-                errorResponse.email = 'Email already exists';
-            }
-            if (isUsernameExist) {
-                errorResponse.username = 'Username already exists';
-            }
-            return response.status(400).json({ errors: errorResponse });
+        // if (isEmailExist && isUsernameExist) {
+        //     return response.status(400).json({ error: 'Email and Username already exist' });
+        // }
+
+        if (isEmailExist) {
+            return response.status(400).json({ error: 'Email already exists' });
+        }
+
+        if (isUsernameExist) {
+            return response.status(400).json({ error: 'Username already exists' });
         }
 
         // apply hash

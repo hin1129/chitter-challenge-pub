@@ -13,9 +13,9 @@ const PostComment = () => {
         }
         catch (error) {
             alert(`PostComment - PostRequest`)
-            console.dir(error)
-            console.error(error);
-            throw error;
+            // console.dir(error)
+            // console.error(error);
+            // throw error;
         }
     }
 
@@ -26,8 +26,8 @@ const PostComment = () => {
         const username = localStorage.getItem("username")
         const createCommentObject = { username: username, commentDescription, date: new Date() }
         await submitCommentPostRequest(createCommentObject);
-        console.log(createCommentObject)
         navigate('/')
+        console.log(createCommentObject)
     }
 
     return (
