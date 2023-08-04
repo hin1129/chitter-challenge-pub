@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-const Comment = ({ commentListProps, onDelete, onEdit }) => {
+const Comment = ({ commentListProps, onEdit, onDelete }) => {
     // retrieve data from comment-list
     const myUsername = commentListProps.username;
     const myCommentDescription = commentListProps.commentDescription;
@@ -16,20 +16,6 @@ const Comment = ({ commentListProps, onDelete, onEdit }) => {
     // user state
     const loggedInUsername = localStorage.getItem('username')
     const isCurrentUser = myUsername === loggedInUsername
-
-    const deleteCommentDeleteRequest = async () => {
-        try {
-            // delete comment by its ID
-            await axios.delete(`http://localhost:8000/comment`, { data: { id: myID } });
-            // notify parent component about deletion
-            onDelete(myID);
-            console.log(`comment id deleted: ${myID}`)
-        }
-        catch (error) {
-            alert(`Comment - DeleteRequest`)
-            console.log(error);
-        }
-    };
 
     const editCommentPutRequest = async () => {
         try {
@@ -49,6 +35,20 @@ const Comment = ({ commentListProps, onDelete, onEdit }) => {
             console.log(error);
         }
     }
+
+    const deleteCommentDeleteRequest = async () => {
+        try {
+            // delete comment by its ID
+            await axios.delete(`http://localhost:8000/comment`, { data: { id: myID } });
+            // notify parent component about deletion
+            onDelete(myID);
+            console.log(`comment id deleted: ${myID}`)
+        }
+        catch (error) {
+            alert(`Comment - DeleteRequest`)
+            console.log(error);
+        }
+    };
 
     const handleExpandClick = () => {
         setIsExpanded(!isExpanded)

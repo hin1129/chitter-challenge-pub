@@ -17,14 +17,11 @@ const host = process.env.HOST;
 
 // connect to DB
 const main = async () => {
-    // display db url
     try {
         console.log(`DB at: ${process.env.DB_URI}`)
         await mongoose.connect(process.env.DB_URI)
     }
-    catch (error) {
-        console.log(error)
-    }
+    catch (error) { console.log(error) }
 }
 main().catch(error => { console.log(error) })
 

@@ -11,9 +11,9 @@ router.post("/signIn", (request, response) => {
 
     // check if email exists
     User.findOne({ email })
-        // if exists
+        // if email exists
         .then((user) => {
-            // compare password entered and hashed password
+            // compare password entered to hashed password
             bcrypt.compare(password, user.password)
                 // check passwords
                 .then((passwordCheck) => {
@@ -30,7 +30,8 @@ router.post("/signIn", (request, response) => {
                     const token = jwt.sign(
                         { userId: user._id, userEmail: user.email, },
                         "RANDOM-TOKEN",
-                        { expiresIn: "24h" }
+                        // { expiresIn: "24h" }
+                        { expiresIn: "10s" }
                     );
 
                     // successful, response.data array in browser console

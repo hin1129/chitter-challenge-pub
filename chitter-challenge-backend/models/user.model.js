@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-// create schema, map to db document
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,

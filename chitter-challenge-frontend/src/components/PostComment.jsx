@@ -11,12 +11,7 @@ const PostComment = () => {
             const response = await axios.post(`http://localhost:8000/postcomment`, comment);
             return (response.data);
         }
-        catch (error) {
-            alert(`PostComment - PostRequest`)
-            // console.dir(error)
-            // console.error(error);
-            // throw error;
-        }
+        catch (error) { alert(`PostComment - PostRequest`) }
     }
 
     // submit form

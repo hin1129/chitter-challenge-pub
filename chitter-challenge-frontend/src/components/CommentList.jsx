@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
 import axios from 'axios'
 import Comment from './Comment'
 
@@ -23,6 +22,16 @@ const CommentList = ({ loggedInState }) => {
         getCommentListGetRequest()
     }, [loggedInState])
 
+    // edit comment
+    const handleEditComment = (editedComment) => {
+        setCommentList((previousComments) => {
+            // iterate existing array and update the edited comment
+            return previousComments.map(
+                (comment) => comment._id === editedComment._id ? editedComment : comment
+            );
+        });
+    };
+
     // delete comment
     const handleDeleteComment = (deleteCommentID) => {
         // previous state value of comment list
@@ -34,16 +43,6 @@ const CommentList = ({ loggedInState }) => {
         })
     }
 
-    // edit comment
-    const handleEditComment = (editedComment) => {
-        setCommentList((previousComments) => {
-            // iterate existing array and update the edited comment
-            return previousComments.map(
-                (comment) => comment._id === editedComment._id ? editedComment : comment
-            );
-        });
-    };
-
     // pass data to comment component
     const allComments = commentList.map(
         currentComment => {
@@ -51,8 +50,8 @@ const CommentList = ({ loggedInState }) => {
                 <Comment
                     commentListProps={currentComment}
                     key={currentComment._id}
-                    onDelete={handleDeleteComment}
                     onEdit={handleEditComment}
+                    onDelete={handleDeleteComment}
                 />
             )
         }

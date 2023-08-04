@@ -12,23 +12,47 @@ import Cookies from 'universal-cookie'
 function App() {
   const [logInState, setLogInState] = useState(false);
 
-  useEffect(() => {
-    // const isLoggedIn = localStorage.getItem('loggedIn');
-    // if (isLoggedIn === 'true') { setLogInState(true) }
+  // useEffect(() => {
+  //   // const isLoggedIn = localStorage.getItem('loggedIn');
+  //   // if (isLoggedIn === 'true') { setLogInState(true) }
 
-    const token = localStorage.getItem('token');
-    if (token) { setLogInState(true); }
-  }, [])
+  //   const token = localStorage.getItem('token');
+  //   if (token) { setLogInState(true); }
+  // }, [])
+
+  useEffect(() => {
+    // Check if token is expired and log out user if necessary
+    const checkTokenExpiration = () => {
+      const token = localStorage.getItem('token');
+      const expirationTime = localStorage.getItem('tokenExpiration');
+
+      if (token && expirationTime) {
+        const currentTime = new Date().getTime();
+
+        if (currentTime > Number(expirationTime)) { handleLogout(); }
+        else { setLogInState(true); }
+      }
+    };
+
+    checkTokenExpiration();
+
+    // Set up interval to periodically check the token's expiration status
+    const interval = setInterval(checkTokenExpiration, 1000); // Check every second
+
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, []);
 
   const cookies = new Cookies()
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('username');
     cookies.remove('TOKEN');
     setLogInState(false);
-    console.log("just logged out")
-    console.log({ logInState })
+    console.log("just logged out")//
+    console.log({ logInState })//
   }
 
   return (
@@ -54,7 +78,7 @@ function App() {
           element={logInState ? (
             <Navigate to="/" />
           ) : (
-            <SignIn setLogInState={setLogInState} />
+            <SignIn setLogInState={setLogInState} handleLogout={handleLogout} />
           )}
         />
       </Routes>

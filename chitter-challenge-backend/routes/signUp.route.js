@@ -13,10 +13,6 @@ router.post('/signup', async (request, response) => {
         const isEmailExist = await User.findOne({ email });
         const isUsernameExist = await User.findOne({ username });
 
-        // if (isEmailExist && isUsernameExist) {
-        //     return response.status(400).json({ error: 'Email and Username already exist' });
-        // }
-
         if (isEmailExist) {
             return response.status(400).json({ error: 'Email already exists' });
         }
@@ -42,26 +38,3 @@ router.post('/signup', async (request, response) => {
         response.status(400).json('error: ' + error);
     }
 });
-
-
-// router.post('/signup', (request, response) => {
-//     const fullName = request.body.fullName;
-//     const username = request.body.username;
-//     const email = request.body.email;
-//     const password = request.body.password;
-
-//     // apply hash
-//     bcrypt.hash(password, 10)
-//         .then((hashedPassword) => {
-//             const newUser = new User({
-//                 fullName,
-//                 username,
-//                 email,
-//                 password: hashedPassword
-//             });
-
-//             newUser.save()
-//                 .then(() => response.json('user added'))
-//                 .catch(error => response.status(400).json('error: ' + error));
-//         });
-// })
