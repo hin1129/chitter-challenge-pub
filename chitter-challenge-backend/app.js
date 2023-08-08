@@ -8,6 +8,7 @@ import cors from 'cors'
 import { router as comment } from './routes/comment.route.js'
 import { router as signUp } from './routes/signUp.route.js'
 import { router as signIn } from './routes/signIn.route.js'
+import { router as emailVerification } from './routes/emailVerification.route.js'
 
 // server/env setup
 dotenv.config()
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(`/`, comment);
 app.use(`/`, signUp);
 app.use(`/`, signIn);
+app.use(`/`, emailVerification);
 
 // run server
 const server = app.listen(port, host, () => {

@@ -39,7 +39,8 @@ const SignIn = ({ setLogInState, handleLogout }) => {
             // cookies (in cookies session) accessible across all pages of website
             cookies.set("TOKEN", responseData.token, { path: "/", })
 
-            const expirationTime = new Date().getTime() + 10000; // 10 seconds (10000 milliseconds)
+            // const expirationTime = new Date().getTime() + 10000; // 10 seconds (10000 milliseconds)
+            const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 10 seconds (10000 milliseconds)
             localStorage.setItem('token', responseData.token)
             localStorage.setItem('tokenExpiration', expirationTime);
             localStorage.setItem('loggedIn', true)

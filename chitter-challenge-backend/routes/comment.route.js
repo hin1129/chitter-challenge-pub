@@ -2,7 +2,7 @@ import express from 'express'
 export const router = express.Router()
 import Comment from '../models/comment.model.js'
 
-// get all comments
+// comment-list component
 router.get(`/`, (request, response) => {
     Comment.find()
         .then((comment) => {
@@ -12,7 +12,7 @@ router.get(`/`, (request, response) => {
         .catch((error) => { response.status(400).json('error: ' + error) })
 })
 
-// post new comment
+// post-comment component
 router.post('/postcomment', (request, response) => {
     const username = request.body.username;
     const commentDescription = request.body.commentDescription;
@@ -29,7 +29,7 @@ router.post('/postcomment', (request, response) => {
         .catch(error => response.status(400).json('error: ' + error));
 });
 
-// delete comments, based on id
+// comment component
 router.delete('/comment', async (request, response) => {
     try {
         const commendID = request.body.id;
@@ -41,7 +41,7 @@ router.delete('/comment', async (request, response) => {
     }
 })
 
-// edit comments
+// comment component
 router.put('/comment/:id', async (request, response) => {
     const commentID = request.params.id
     const { username, commentDescription, date } = request.body

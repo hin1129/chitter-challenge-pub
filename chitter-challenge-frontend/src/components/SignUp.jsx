@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { isEmail } from 'validator'
+import { Link } from 'react-router-dom'
 
 const SignUp = () => {
     const [fullName, setFullName] = useState(``)
@@ -8,6 +9,8 @@ const SignUp = () => {
     const [email, setEmail] = useState(``)
     const [password, setPassword] = useState(``)
     const [errors, setErrors] = useState({})
+    // 
+    const [verificationLink, setVerificationLink] = useState('')
 
     const restrictedWords = ['admin', 'root', 'guest', 'test'];
 
@@ -73,9 +76,16 @@ const SignUp = () => {
 
         // pass object to post request
         const createSignUpObject = { fullName, username, email, password }
-        await submitSignUpPostRequest(createSignUpObject);
+        const signUpResponse = await submitSignUpPostRequest(createSignUpObject); // email verification
         console.log(createSignUpObject)
         alert("Sign Up form submitted")
+
+        // email verification
+        if (signUpResponse) {
+            const verificationToken = signUpResponse.verificationToken;
+            const verificationLink = `emailverification/${verificationToken}`;
+            setVerificationLink(verificationLink);
+        }
     }
 
     // clear errors when inputs change
@@ -141,6 +151,15 @@ const SignUp = () => {
                 <input type="submit" value="sign up" />
             </form>
 
+
+            {verificationLink && (
+                <div>
+                    <p>signup successful, check email for verification</p>
+                    <p>
+                        click <Link to={verificationLink}>here</Link> to verity your email
+                    </p>
+                </div>
+            )}
         </div>
     )
 }

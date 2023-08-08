@@ -7,6 +7,7 @@ import CommentList from './components/CommentList'
 import PostComment from './components/PostComment';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+import EmailVerification from './components/EmailVerification';
 import Cookies from 'universal-cookie'
 
 function App() {
@@ -81,6 +82,9 @@ function App() {
             <SignIn setLogInState={setLogInState} handleLogout={handleLogout} />
           )}
         />
+
+        {/* email verification */}
+        <Route path="/emailverification/:token" element={<EmailVerification />} />
       </Routes>
 
       <Footer />

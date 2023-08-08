@@ -24,8 +24,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    // email verification
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+    emailVerificationToken: String
 });
 
-const UserDB = mongoose.model(`user`, userSchema);
+const UserDB = mongoose.model(`user1`, userSchema);
 export default UserDB;
