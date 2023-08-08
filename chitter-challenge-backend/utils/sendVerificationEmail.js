@@ -8,8 +8,6 @@ async function sendVerificationEmail(email, token) {
     const transporter = nodemailer.createTransport({
         service: 'Outlook',
         auth: {
-            // user: 'hin_1129@hotmail.com',
-            // pass: 'Yth1129!',
             user: process.env.EMAIL_USERNAME,
             pass: process.env.EMAIL_PASSWORD,
         }
