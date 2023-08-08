@@ -13,10 +13,9 @@ async function sendVerificationEmail(email, token) {
         }
     })
 
-    // domain name
     // used to create URL that points to email verification route in app,
     // email sent to user contains this link,
-    // when user clicks on this link, will redirect to email verification route in app
+    // when user clicks on it, will redirect to email verification route in app
     const verificationLink = `http://localhost:3000/emailverification/${token}`;
 
     const mailOptions = {

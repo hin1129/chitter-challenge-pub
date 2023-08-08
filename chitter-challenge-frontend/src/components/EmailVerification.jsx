@@ -1,5 +1,5 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
 const EmailVerification = () => {
@@ -7,18 +7,19 @@ const EmailVerification = () => {
     const [emailVerificationStatus, setEmailVerificationStatus] = useState('')
 
     useEffect(() => {
-        axios.get('/http://localhost:8000/emailverification/${token}')
+        axios.get(`http://localhost:8000/emailverification/${token}`)
             .then(response => {
-                setEmailVerificationStatus('email verification successful')
+                setEmailVerificationStatus('Email verification successful')
             })
             .catch((error) => {
-                setEmailVerificationStatus('invalid or expired token')
+                setEmailVerificationStatus('Invalid or expired token')
             })
     }, [token])
 
     return (
         <div>
-            <h1>Email Verification</h1>
+            <br />
+            <h2>Email Verification</h2>
             <p>{emailVerificationStatus}</p>
         </div>
     )

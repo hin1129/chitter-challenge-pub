@@ -9,8 +9,7 @@ const SignUp = () => {
     const [email, setEmail] = useState(``)
     const [password, setPassword] = useState(``)
     const [errors, setErrors] = useState({})
-    // 
-    const [verificationLink, setVerificationLink] = useState('')
+    const [verificationLink, setVerificationLink] = useState(``)
 
     const restrictedWords = ['admin', 'root', 'guest', 'test'];
 
@@ -151,13 +150,14 @@ const SignUp = () => {
                 <input type="submit" value="sign up" />
             </form>
 
-
+            {/* display email verification result */}
+            <br />
             {verificationLink && (
                 <div>
-                    <p>signup successful, check email for verification</p>
-                    <p>
+                    <p>Signup successful, check your email to verify the account</p>
+                    {/* <p>
                         click <Link to={verificationLink}>here</Link> to verity your email
-                    </p>
+                    </p> */}
                 </div>
             )}
         </div>

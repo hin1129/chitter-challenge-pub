@@ -13,14 +13,6 @@ import Cookies from 'universal-cookie'
 function App() {
   const [logInState, setLogInState] = useState(false);
 
-  // useEffect(() => {
-  //   // const isLoggedIn = localStorage.getItem('loggedIn');
-  //   // if (isLoggedIn === 'true') { setLogInState(true) }
-
-  //   const token = localStorage.getItem('token');
-  //   if (token) { setLogInState(true); }
-  // }, [])
-
   useEffect(() => {
     // Check if token is expired and log out user if necessary
     const checkTokenExpiration = () => {
@@ -62,12 +54,13 @@ function App() {
 
       <Routes>
         <Route path="/" element={<CommentList />} />
-        {/* <Route path="/" element={< />} /> */}
 
         <Route
           path="/postcomment"
           element={logInState ? <PostComment /> : <Navigate to="/signin" />}
         />
+
+        <Route path="/emailverification/:token" element={<EmailVerification />} />
 
         <Route
           path="/signup"
@@ -82,9 +75,6 @@ function App() {
             <SignIn setLogInState={setLogInState} handleLogout={handleLogout} />
           )}
         />
-
-        {/* email verification */}
-        <Route path="/emailverification/:token" element={<EmailVerification />} />
       </Routes>
 
       <Footer />

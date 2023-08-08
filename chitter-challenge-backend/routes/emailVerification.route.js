@@ -1,13 +1,18 @@
 import express from 'express'
 export const router = express.Router()
+import { body, validationResult } from 'express-validator'
 import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 router.get('/emailverification/:token', async (request, response) => {
     const { token } = request.params;
 
     try {
-        const decoded = jwt.verify(token, 'EMAIL-VERIFICATION-SECRET');
+        // decode with secret key
+        const decoded = jwt.verify(token, process.env.EMAIL_VERIFICATION_SECRET_KEY);
         const userID = decoded.userID
         // find user
         const user = await User.findById(userID)
@@ -21,7 +26,6 @@ router.get('/emailverification/:token', async (request, response) => {
 
         response.json({ message: 'Email verification successful' })
     }
-    // this is being displayed after clicking on email verification link, on emailverification.jsx
     catch (error) {
         response.status(400).json({ error: 'invalid or token expired' })
     }

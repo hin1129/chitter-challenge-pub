@@ -1,10 +1,14 @@
 import express from 'express'
 export const router = express.Router()
+import { body, validationResult } from 'express-validator'
 import User from '../models/user.model.js'
 import bcrypt from 'bcryptjs'
+import dotenv from 'dotenv'
 // email verification
 import jwt from 'jsonwebtoken'
 import sendVerificationEmail from '../utils/sendVerificationEmail.js'
+
+dotenv.config()
 
 // non-verified email
 // router.post('/signup', async (request, response) => {
@@ -77,8 +81,9 @@ router.post('/signup', async (request, response) => {
         // token for verification
         const verificationToken = jwt.sign(
             { userID: newUser._id },
-            'EMAIL-VERIFICATION-SECRET',
-            { expiresIn: '1d' }, // expires in 24h
+            process.env.EMAIL_VERIFICATION_SECRET_KEY,
+            { expiresIn: '1h' }, // expires in 24h
+            // { expiresIn: '10' }, // expires in 10 secs
         );
 
         // assign to property

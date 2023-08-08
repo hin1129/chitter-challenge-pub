@@ -31,7 +31,7 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
             setIsExpanded(false); // back to non-expanded
         }
         catch (error) {
-            alert(`Comment - PutRequest`)
+            alert(`Comment - PutRequest error`)
             console.log(error);
         }
     }
@@ -45,7 +45,7 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
             console.log(`comment id deleted: ${myID}`)
         }
         catch (error) {
-            alert(`Comment - DeleteRequest`)
+            alert(`Comment - DeleteRequest error`)
             console.log(error);
         }
     };

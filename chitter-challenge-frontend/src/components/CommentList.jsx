@@ -12,7 +12,7 @@ const CommentList = ({ loggedInState }) => {
             console.log(response.data)
         }
         catch (error) {
-            alert(`CommentList - GetRequest`)
+            alert(`CommentList - GetRequest error`)
             console.dir(error)
         }
     }
