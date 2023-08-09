@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import validator from 'validator';
 
 const userSchema = new mongoose.Schema({
     fullName: {
@@ -14,18 +15,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        // validate: {
-        //     validator: function (value) {
-        //         return isEmail(value);
-        //     },
-        //     message: 'email not valid'
-        // }
+        validate: {
+            validator: (value) => validator.isEmail(value),
+            message: 'invalid email'
+        }
     },
     password: {
         type: String,
         required: true,
     },
-    // email verification
     isEmailVerified: {
         type: Boolean,
         default: false
@@ -33,5 +31,6 @@ const userSchema = new mongoose.Schema({
     emailVerificationToken: String
 });
 
+// const UserDB = mongoose.model(`user`, userSchema);
 const UserDB = mongoose.model(`user1`, userSchema);
 export default UserDB;

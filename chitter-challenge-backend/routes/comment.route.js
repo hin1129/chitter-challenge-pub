@@ -14,7 +14,18 @@ router.get(`/`, (request, response) => {
 })
 
 // post-comment component
-router.post('/postcomment', (request, response) => {
+router.post('/postcomment', [
+    body('username').notEmpty().withMessage('username is required'),
+    body('commentDescription').notEmpty().withMessage('comment description is required'),
+    body('date')
+        .notEmpty().withMessage('date is required')
+        .isISO8601().withMessage('invalid date format'),
+], (request, response) => {
+    const errors = validationResult(request)
+    if (!errors.isEmpty()) {
+        return (response.status(400).json({ errors: errors.array() }))
+    }
+
     const username = request.body.username;
     const commentDescription = request.body.commentDescription;
     const date = request.body.date;
@@ -30,20 +41,54 @@ router.post('/postcomment', (request, response) => {
         .catch(error => response.status(400).json('error: ' + error));
 });
 
+// // comment component
+// router.delete('/comment', async (request, response) => {
+//     try {
+//         const commendID = request.body.id;
+//         await Comment.findByIdAndDelete(commendID)
+//         response.json("comment deleted")
+//     }
+//     catch (error) {
+//         response.status(400).json("error deleting comment" + error)
+//     }
+// })
+
 // comment component
-router.delete('/comment', async (request, response) => {
+router.delete('/comment', [
+    body('id').notEmpty().isMongoId().withMessage('invalid comment id'),
+], async (request, response) => {
+    const errors = validationResult(request)
+    if (!errors.isEmpty()) {
+        return (response.status(400).json({ errors: errors.array() }))
+    }
+
+    const commentID = request.body.id
+
     try {
-        const commendID = request.body.id;
-        await Comment.findByIdAndDelete(commendID)
-        response.json("comment deleted")
+        const deletedComment = await Comment.findByIdAndDelete(commentID)
+        if (!deletedComment) {
+            return (response.status(404).json({ error: "comment not found" }))
+        }
+        response.status(200).json({ message: "comment deleted" })
     }
     catch (error) {
-        response.status(400).json("error deleting comment" + error)
+        response.status(400).json({ message: "error deleting comment" })
     }
 })
 
 // comment component
-router.put('/comment/:id', async (request, response) => {
+router.put('/comment/:id', [
+    body('username').notEmpty().withMessage('username is required'),
+    body('description').notEmpty().withMessage('description is required'),
+    body('date')
+        .notEmpty().withMessage('date is required')
+        .isISO8601().withMessage('invalid date format'),
+], async (request, response) => {
+    const errors = validationResult(request)
+    if (!errors.isEmpty()) {
+        return (response.status(400).json({ errors: errors.array() }))
+    }
+
     const commentID = request.params.id
     const { username, commentDescription, date } = request.body
 

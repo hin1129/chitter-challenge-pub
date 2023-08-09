@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import fs from 'fs'
 
 // routes
 import { router as comment } from './routes/comment.route.js'

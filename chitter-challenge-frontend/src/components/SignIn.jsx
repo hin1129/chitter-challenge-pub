@@ -36,6 +36,7 @@ const SignIn = ({ setLogInState, handleLogout }) => {
         try {
             const user = { email, password }
             const responseData = await submitSignUpPostRequest(user)
+
             // cookies (in cookies session) accessible across all pages of website
             cookies.set("TOKEN", responseData.token, { path: "/", })
 

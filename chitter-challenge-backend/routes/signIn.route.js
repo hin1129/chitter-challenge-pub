@@ -5,7 +5,6 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-// non-email verification
 // router.post("/signIn", (request, response) => {
 //     const email = request.body.email;
 //     const password = request.body.password;
@@ -14,7 +13,15 @@ import bcrypt from 'bcryptjs'
 //     // check if email exists
 //     User.findOne({ email })
 //         // if email exists
-//         .then((user) => {
+//         .then(async (user) => {
+
+//             // check if email is verified
+//             if (!user.isEmailVerified) {
+//                 return response.status(400).send(
+//                     { message: "email not verified", }
+//                 );
+//             }
+
 //             // compare password entered to hashed password
 //             bcrypt.compare(password, user.password)
 //                 // check passwords
@@ -62,9 +69,16 @@ import bcrypt from 'bcryptjs'
 //         });
 // });
 
+// express validator
+router.post("/signIn", [
+    body('email').isEmail().withMessage('invalid email'),
+    body('password').notEmpty().withMessage('password is required'),
+], (request, response) => {
+    const errors = validationResult(request)
+    if (!errors.isEmpty()) {
+        return (response.status(400).json({ errors: errors.array() }))
+    }
 
-// email verification
-router.post("/signIn", (request, response) => {
     const email = request.body.email;
     const password = request.body.password;
     const username = request.body.username;
