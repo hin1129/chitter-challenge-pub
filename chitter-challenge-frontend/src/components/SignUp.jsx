@@ -35,6 +35,10 @@ const SignUp = () => {
     const handleSignUp = async (event) => {
         event.preventDefault();
 
+        const trimmedFullName = fullName.trim();
+        const trimmedUsername = username.trim();
+        const trimmedEmail = email.trim();
+        const trimmedPassword = password.trim();
         // validation
         const validationErrors = {}
 
@@ -74,7 +78,12 @@ const SignUp = () => {
         setErrors({})
 
         // pass object to post request
-        const createSignUpObject = { fullName, username, email, password }
+        const createSignUpObject = {
+            fullName: trimmedFullName,
+            username: trimmedUsername,
+            email: trimmedEmail,
+            password: trimmedPassword
+        }
         const signUpResponse = await submitSignUpPostRequest(createSignUpObject); // email verification
         console.log(createSignUpObject)
         alert("Sign Up form submitted")
@@ -147,7 +156,16 @@ const SignUp = () => {
                 {errors.password && <div role="alert">{errors.password}</div>}
 
                 <br />
-                <input type="submit" value="sign up" />
+                <input
+                    type="submit"
+                    value="sign up"
+                    disabled={
+                        !fullName.trim() ||
+                        !username.trim() ||
+                        !email.trim() ||
+                        !password.trim()
+                    }
+                />
             </form>
 
             {/* display email verification result */}
@@ -156,8 +174,8 @@ const SignUp = () => {
                 <div>
                     <p>Signup successful, check your email to verify the account</p>
                     {/* <p>
-                        click <Link to={verificationLink}>here</Link> to verity your email
-                    </p> */}
+                            click <Link to={verificationLink}>here</Link> to verity your email
+                        </p> */}
                 </div>
             )}
         </div>

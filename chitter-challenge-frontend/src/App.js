@@ -60,12 +60,12 @@ function App() {
           element={logInState ? <PostComment /> : <Navigate to="/signin" />}
         />
 
-        <Route path="/emailverification/:token" element={<EmailVerification />} />
-
         <Route
           path="/signup"
           element={logInState ? <Navigate to="/" /> : <SignUp />}
         />
+
+        <Route path="/emailverification/:token" element={<EmailVerification />} />
 
         <Route
           path="/signin"

@@ -15,8 +15,8 @@ router.get(`/`, (request, response) => {
 
 // post-comment component
 router.post('/postcomment', [
-    body('username').notEmpty().withMessage('username is required'),
-    body('commentDescription').notEmpty().withMessage('comment description is required'),
+    body('username').notEmpty().trim().escape().withMessage('username is required'),
+    body('commentDescription').notEmpty().trim().escape().withMessage('comment description is required'),
     body('date')
         .notEmpty().withMessage('date is required')
         .isISO8601().withMessage('invalid date format'),
@@ -40,18 +40,6 @@ router.post('/postcomment', [
         .then(() => response.json('comment added'))
         .catch(error => response.status(400).json('error: ' + error));
 });
-
-// // comment component
-// router.delete('/comment', async (request, response) => {
-//     try {
-//         const commendID = request.body.id;
-//         await Comment.findByIdAndDelete(commendID)
-//         response.json("comment deleted")
-//     }
-//     catch (error) {
-//         response.status(400).json("error deleting comment" + error)
-//     }
-// })
 
 // comment component
 router.delete('/comment', [
@@ -79,7 +67,7 @@ router.delete('/comment', [
 // comment component
 router.put('/comment/:id', [
     body('username').notEmpty().withMessage('username is required'),
-    body('description').notEmpty().withMessage('description is required'),
+    body('commentDescription').notEmpty().withMessage('description is required'),
     body('date')
         .notEmpty().withMessage('date is required')
         .isISO8601().withMessage('invalid date format'),

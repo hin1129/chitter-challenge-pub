@@ -34,7 +34,9 @@ const SignIn = ({ setLogInState, handleLogout }) => {
         if (Object.keys(validationErrors).length > 0) { return; }
 
         try {
-            const user = { email, password }
+            const trimmedEmail = email.trim();
+            const trimmedPassword = password.trim();
+            const user = { email: trimmedEmail, password: trimmedPassword }
             const responseData = await submitSignUpPostRequest(user)
 
             // cookies (in cookies session) accessible across all pages of website
@@ -118,7 +120,11 @@ const SignIn = ({ setLogInState, handleLogout }) => {
                 {errors.password && <div role="alert">{errors.password}</div>}
                 <br />
 
-                <input type="submit" value="sign in" />
+                <input
+                    type="submit"
+                    value="sign in"
+                    disabled={!email.trim() || !password.trim()}
+                />
             </form>
         </div>
     )

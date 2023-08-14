@@ -17,9 +17,15 @@ const PostComment = () => {
     // submit form
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         // pass object to post request
+        const trimmedDescription = commentDescription.trim();
         const username = localStorage.getItem("username")
-        const createCommentObject = { username: username, commentDescription, date: new Date() }
+        const createCommentObject = {
+            username: username,
+            commentDescription: trimmedDescription,
+            date: new Date().toISOString()
+        }
         await submitCommentPostRequest(createCommentObject);
         navigate('/')
         console.log(createCommentObject)
@@ -38,7 +44,7 @@ const PostComment = () => {
                 onChange={event => setCommentDescription(event.target.value)}
             />
 
-            <input type="submit" value="submit" />
+            <input type="submit" value="submit" disabled={!commentDescription.trim()} />
         </form>
     )
 }

@@ -19,14 +19,21 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
 
     const editCommentPutRequest = async () => {
         try {
-            await axios.put(`http://localhost:8000/comment/${myID}`, { commentDescription: editedComment })
+            const trimmedEditedComment = editedComment.trim();
+            await axios.put(`http://localhost:8000/comment/${myID}`, {
+                // for backend validation
+                username: myUsername,
+                commentDescription: editedComment,
+                date: myDate.toISOString()
+            })
             setIsEditing(false) // back to non-editable
             console.log(`comment id edited: ${myID}`)
             console.log(`comment edited: ${editedComment}`)
             // notify parent component about edited comment
             onEdit({
                 ...commentListProps, // copy existing properties
-                commentDescription: editedComment // update description
+                // commentDescription: editedComment // update description
+                commentDescription: trimmedEditedComment,
             })
             setIsExpanded(false); // back to non-expanded
         }
@@ -86,7 +93,7 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                                     value={editedComment}
                                     onChange={(event) => setEditedComment(event.target.value)}
                                 />
-                                <button onClick={editCommentPutRequest}>Save Changes</button>
+                                <button onClick={editCommentPutRequest} disabled={!editedComment.trim()}>Save Changes</button>
                                 <button onClick={handleCancelEditComment}>Cancel Changes</button>
                             </>
                         ) : (
