@@ -21,7 +21,7 @@ async function sendVerificationEmail(email, token) {
     const mailOptions = {
         from: 'hin_1129@hotmail.com',
         to: email,
-        subject: 'chitter challenge - verity your email',
+        subject: 'chitter challenge - verify your email',
         text: `link to verify your email: \n ${verificationLink} `
     };
 

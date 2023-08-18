@@ -15,13 +15,13 @@ function App() {
   const cookies = new Cookies()
 
   const handleLogout = () => {
+    setLogInState(false);
+    cookies.remove('Token');
+    localStorage.clear();
     // localStorage.removeItem('Token');
     // localStorage.removeItem('TokenExpiration');
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('Username');
-    localStorage.clear();
-    cookies.remove('Token');
-    setLogInState(false);
   }
 
   const checkTokenExpiration = () => {
@@ -71,7 +71,6 @@ function App() {
           element={logInState ? (
             <Navigate to="/" />
           ) : (
-            // <SignIn setLogInState={setLogInState} handleLogout={handleLogout} />
             <SignIn setLogInState={setLogInState} />
           )}
         />

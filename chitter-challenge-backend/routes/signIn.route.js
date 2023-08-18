@@ -50,14 +50,19 @@ router.post("/signIn", [
                     const token = jwt.sign(
                         { userId: user._id, userEmail: user.email, },
                         process.env.JWT_SECRET_KEY,
-                        // { expiresIn: "1h" }
-                        { expiresIn: "5s" }
+                        { expiresIn: "1h" }
+                        // { expiresIn: "5s" }
                     );
 
                     response.header('Authorization', `Bearer ${token}`)
 
                     response.cookie('Token', token, {
                         httpOnly: true,
+                        // secure: true,
+                        // sameSite: 'strict',
+                        // path: '/',
+                        // expires: new Date(Date.now() + 60 * 60 * 1000)
+                        // expires: new Date(Date.now() + 10 * 1000)
                     })
 
                     // successful, response.data array in browser console

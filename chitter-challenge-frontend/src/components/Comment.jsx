@@ -72,6 +72,10 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
         setIsEditing(false)
     }
 
+    const handleCancelExpandClick = () => {
+        setIsExpanded(false)
+    }
+
     const handleEditComment = () => {
         setIsExpanded(true);
         setIsEditing(true);
@@ -112,7 +116,8 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                                 {isCurrentUser && (
                                     <>
                                         <button onClick={handleEditComment}>Edit</button><br />
-                                        <button onClick={deleteCommentDeleteRequest}>Delete</button>
+                                        <button onClick={deleteCommentDeleteRequest}>Delete</button><br />
+                                        <button onClick={handleCancelExpandClick}>Cancel</button>
                                     </>
                                 )}
                             </>
