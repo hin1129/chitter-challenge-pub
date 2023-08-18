@@ -2,6 +2,7 @@ import express from 'express'
 export const router = express.Router()
 import { body, validationResult } from 'express-validator'
 import Comment from '../models/comment.model.js'
+import { verifyToken } from '../middleware/VerifyToken.js'
 
 // comment-list component
 router.get(`/`, (request, response) => {
@@ -14,7 +15,7 @@ router.get(`/`, (request, response) => {
 })
 
 // post-comment component
-router.post('/postcomment', [
+router.post('/postcomment', verifyToken, [
     body('username').notEmpty().trim().escape().withMessage('username is required'),
     body('commentDescription').notEmpty().trim().escape().withMessage('comment description is required'),
     body('date')
@@ -42,7 +43,7 @@ router.post('/postcomment', [
 });
 
 // comment component
-router.delete('/comment', [
+router.delete('/comment', verifyToken, [
     body('id').notEmpty().isMongoId().withMessage('invalid comment id'),
 ], async (request, response) => {
     const errors = validationResult(request)
@@ -65,7 +66,7 @@ router.delete('/comment', [
 })
 
 // comment component
-router.put('/comment/:id', [
+router.put('/comment/:id', verifyToken, [
     body('username').notEmpty().withMessage('username is required'),
     body('commentDescription').notEmpty().withMessage('description is required'),
     body('date')

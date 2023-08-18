@@ -9,8 +9,6 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import EmailVerification from './components/EmailVerification';
 import Cookies from 'universal-cookie'
-import jwt_decode from 'jwt-decode'
-import axios from 'axios';
 
 function App() {
   const [logInState, setLogInState] = useState(false);
@@ -27,15 +25,11 @@ function App() {
   }
 
   const checkTokenExpiration = () => {
-    // const token = localStorage.getItem('Token');
+    const cookiesToken = cookies.get('Token')
+    const localStorageToken = localStorage.getItem('Token');
     const expirationTime = localStorage.getItem('TokenExpiration');
 
-    const token = cookies.get('Token')
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    // const decodedToken = jwt_decode(Token)
-    // const expirationTime = decodedToken.exp * 1000
-
-    if (token && expirationTime) {
+    if (cookiesToken && localStorageToken && expirationTime) {
       const currentTime = new Date().getTime();
 
       if (currentTime > Number(expirationTime)) { handleLogout(); }

@@ -8,19 +8,25 @@ const PostComment = () => {
 
     const submitCommentPostRequest = async (comment) => {
         try {
-            const response = await axios.post(`http://localhost:8000/postcomment`, comment);
+            // const response = await axios.post(`http://localhost:8000/postcomment`, comment);
+            // return (response.data);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('Token')}`,
+                }
+            };
+            const response = await axios.post(`http://localhost:8000/postcomment`, comment, config);
             return (response.data);
         }
         catch (error) { alert(`PostComment - PostRequest error`) }
     }
 
-    // submit form
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         // pass object to post request
         const trimmedDescription = commentDescription.trim();
-        const username = localStorage.getItem("username")
+        const username = localStorage.getItem("Username")
         const createCommentObject = {
             username: username,
             commentDescription: trimmedDescription,

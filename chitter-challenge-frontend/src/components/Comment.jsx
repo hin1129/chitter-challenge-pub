@@ -14,18 +14,23 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
     const [editedComment, setEditedComment] = useState(myCommentDescription)
 
     // user state
-    const loggedInUsername = localStorage.getItem('username')
+    const loggedInUsername = localStorage.getItem('Username')
     const isCurrentUser = myUsername === loggedInUsername
 
     const editCommentPutRequest = async () => {
         try {
             const trimmedEditedComment = editedComment.trim();
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('Token')}`,
+                }
+            };
             await axios.put(`http://localhost:8000/comment/${myID}`, {
                 // for backend validation
                 username: myUsername,
                 commentDescription: editedComment,
                 date: myDate.toISOString()
-            })
+            }, config)
             setIsEditing(false) // back to non-editable
             console.log(`comment id edited: ${myID}`)
             console.log(`comment edited: ${editedComment}`)
@@ -45,8 +50,13 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
 
     const deleteCommentDeleteRequest = async () => {
         try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('Token')}`,
+                }
+            };
             // delete comment by its ID
-            await axios.delete(`http://localhost:8000/comment`, { data: { id: myID } });
+            await axios.delete(`http://localhost:8000/comment`, { data: { id: myID }, headers: config.headers });
             // notify parent component about deletion
             onDelete(myID);
             console.log(`comment id deleted: ${myID}`)

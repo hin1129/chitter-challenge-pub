@@ -5,7 +5,6 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
-import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -55,16 +54,16 @@ router.post("/signIn", [
                         { expiresIn: "5s" }
                     );
 
-                    // response.header('Authorization', `Bearer ${token}`)
+                    response.header('Authorization', `Bearer ${token}`)
 
-                    // response.cookie('Token', token, {
-                    //     httpOnly: true,
-                    // })
+                    response.cookie('Token', token, {
+                        httpOnly: true,
+                    })
 
                     // successful, response.data array in browser console
                     response.status(200).send({
                         message: "login successful",
-                        // email: user.email,
+                        // email: user.email, // not used
                         username: user.username, // used in localStorage (edit/delete)
                         token
                     });
@@ -86,10 +85,3 @@ router.post("/signIn", [
             });
         });
 });
-
-// bearer = standard HTTP authentication scheme
-// Authorization: Bearer [header].[payload].[signature]
-// x-access-token = not standard HTTP authentication scheme
-// x-access-token: [header].[payload].[signature]
-// Cookies = automatically included in every request, bound to specific domain/path, HttpOnly/Secure flags enhance security
-// [name] = [header].[payload].[signature]; Path=/; HttpOnly;
