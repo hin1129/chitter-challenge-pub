@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie'
+import jwt_decode from 'jwt-decode';
 
-const SignIn = ({ setLogInState, handleLogout }) => {
+const SignIn = ({ setLogInState }) => {
     const [email, setEmail] = useState(``);
     const [password, setPassword] = useState(``);
     // const [errors, setErrors] = useState({ email: '', password: '' });
@@ -38,18 +39,28 @@ const SignIn = ({ setLogInState, handleLogout }) => {
             const trimmedPassword = password.trim();
             const user = { email: trimmedEmail, password: trimmedPassword }
             const responseData = await submitSignUpPostRequest(user)
+            console.log(responseData)
 
-            // cookies (in cookies session) accessible across all pages of website
-            cookies.set("TOKEN", responseData.token, { path: "/", })
+            // // token in header
+            // const headerToken = responseData.headers['authorization'].split(' ')[1]
+            // const headerToken = responseData.headers.authorization.split(' ')[1]; // Extract the token
+            // console.log(`headerToken: ${headerToken}`)
+            // token in cookies
+            // const cookiesToken = responseData.cookie
+            // console.log(cookiesToken)
 
-            // const expirationTime = new Date().getTime() + 10000; // 10 seconds (10000 milliseconds)
-            const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 10 seconds (10000 milliseconds)
-            localStorage.setItem('token', responseData.token)
-            localStorage.setItem('tokenExpiration', expirationTime);
-            localStorage.setItem('loggedIn', true)
-            localStorage.setItem('username', responseData.username)
+            // key, value, accessible across all pages of website
+            const token = responseData.token;
+            const decodedToken = jwt_decode(token);
+            const expirationTime = decodedToken.exp * 1000;
+            localStorage.setItem('TokenExpiration', expirationTime);
+            localStorage.setItem('Token', token)
+            localStorage.setItem('LoggedIn', true)
+            localStorage.setItem('Username', responseData.username)
+            cookies.set("Token", token, { path: "/", })
             setLogInState(true)
             navigate('/')
+            alert(responseData.message)//
         }
         catch (error) {
             alert(`SignIn - handleSignIn`)
@@ -66,22 +77,6 @@ const SignIn = ({ setLogInState, handleLogout }) => {
             }
         }
     }
-
-    useEffect(() => {
-        const checkTokenExpiration = () => {
-            const token = localStorage.getItem('token');
-            const tokenExpirationTime = localStorage.getItem('tokenExpiration');
-
-            if (token && tokenExpirationTime) {
-                const currentTime = new Date().getTime();
-                if (currentTime > tokenExpirationTime) { handleLogout() }
-            }
-        }
-        // check token expiration status (every second)
-        const interval = setInterval(checkTokenExpiration, 1000)
-        // Clean up the interval when the component is unmounted
-        return () => { clearInterval(interval) }
-    }, [])
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)

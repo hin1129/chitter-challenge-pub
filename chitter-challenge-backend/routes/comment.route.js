@@ -106,7 +106,6 @@ router.put('/comment/:id', [
 // 403 = Forbidden
 // 404 = not found
 // 500 = internal server error
-//
 // Informational responses(100–199): server has received the request and is continuing to process it.
 // Successful responses(200–299): request was successfully received, understood, and processed by the server.
 // Redirection messages(300–399): further action needs to be taken to complete the request, such as following a redirection.

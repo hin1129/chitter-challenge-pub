@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import fs from 'fs'
+import cookieParser from 'cookie-parser'
 
 // routes
 import { router as comment } from './routes/comment.route.js'
@@ -33,6 +34,7 @@ app.use(cors());
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // routes
 app.use(`/`, comment);

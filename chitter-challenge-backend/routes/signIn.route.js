@@ -5,6 +5,7 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -46,21 +47,26 @@ router.post("/signIn", [
                         });
                     }
 
-                    // create token
+                    // create token with user id and email
                     const token = jwt.sign(
                         { userId: user._id, userEmail: user.email, },
-                        // "RANDOM-TOKEN",
                         process.env.JWT_SECRET_KEY,
-                        { expiresIn: "1h" }
-                        // { expiresIn: "10s" }
+                        // { expiresIn: "1h" }
+                        { expiresIn: "5s" }
                     );
+
+                    // response.header('Authorization', `Bearer ${token}`)
+
+                    // response.cookie('Token', token, {
+                    //     httpOnly: true,
+                    // })
 
                     // successful, response.data array in browser console
                     response.status(200).send({
                         message: "login successful",
-                        email: user.email,
-                        username: user.username,
-                        token // should not be displayed in browser console
+                        // email: user.email,
+                        username: user.username, // used in localStorage (edit/delete)
+                        token
                     });
                 })
                 // if password not match
@@ -80,3 +86,10 @@ router.post("/signIn", [
             });
         });
 });
+
+// bearer = standard HTTP authentication scheme
+// Authorization: Bearer [header].[payload].[signature]
+// x-access-token = not standard HTTP authentication scheme
+// x-access-token: [header].[payload].[signature]
+// Cookies = automatically included in every request, bound to specific domain/path, HttpOnly/Secure flags enhance security
+// [name] = [header].[payload].[signature]; Path=/; HttpOnly;
