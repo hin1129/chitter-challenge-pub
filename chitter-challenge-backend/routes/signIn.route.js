@@ -58,9 +58,9 @@ router.post("/signIn", [
 
                     response.cookie('Token', token, {
                         httpOnly: true,
-                        // secure: true,
-                        // sameSite: 'strict',
-                        // path: '/',
+                        secure: true,
+                        sameSite: 'strict',
+                        path: '/',
                         // expires: new Date(Date.now() + 60 * 60 * 1000)
                         // expires: new Date(Date.now() + 10 * 1000)
                     })

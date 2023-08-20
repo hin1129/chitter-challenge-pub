@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Comment from './Comment'
 
-const CommentList = ({ loggedInState }) => {
+const CommentList = ({ logInState }) => {
     const [commentList, setCommentList] = useState([])
 
     const getCommentListGetRequest = async () => {
@@ -20,7 +20,7 @@ const CommentList = ({ loggedInState }) => {
     // rerun server if login state changes
     useEffect(() => {
         getCommentListGetRequest()
-    }, [loggedInState])
+    }, [logInState])
 
     // edit comment
     const handleEditComment = (editedComment) => {
@@ -43,6 +43,20 @@ const CommentList = ({ loggedInState }) => {
         })
     }
 
+    // reply to comment
+    const handleReplyComment = (replyCommentID, newReply) => {
+        setCommentList((previousComments) => {
+            return previousComments.map((comment) => {
+                if (comment._id === replyCommentID) {
+                    // Update comment model's replyComments array with new reply
+                    const updatedReplies = [...comment.replyComments, newReply];
+                    return { ...comment, replyComments: updatedReplies };
+                }
+                return comment;
+            });
+        });
+    };
+
     // pass data to comment component
     const allComments = commentList.map(
         currentComment => {
@@ -52,6 +66,8 @@ const CommentList = ({ loggedInState }) => {
                     key={currentComment._id}
                     onEdit={handleEditComment}
                     onDelete={handleDeleteComment}
+                    onReply={handleReplyComment}
+                    logInState={logInState}
                 />
             )
         }

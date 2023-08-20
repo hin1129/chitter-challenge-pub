@@ -11,6 +11,11 @@ const commentSchema = new mongoose.Schema({
     date: {
         type: Date, required: true
     },
+    replyComments: [{
+        username: String,
+        replyDescription: String,
+        date: Date,
+    }]
 }, { timestamps: true, }
 );
 

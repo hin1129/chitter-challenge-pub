@@ -57,7 +57,8 @@ const SignIn = ({ setLogInState }) => {
             localStorage.setItem('Token', token)
             localStorage.setItem('LoggedIn', true)
             localStorage.setItem('Username', responseData.username)
-            cookies.set("Token", responseData.token, { path: "/", })
+            // cookies.set("Token", responseData.token, { path: "/", })
+            cookies.set("Token", responseData.token)
             setLogInState(true)
             navigate('/')
             alert(responseData.message)//

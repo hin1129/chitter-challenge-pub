@@ -1,10 +1,10 @@
-import express from 'express'
+import express, { response } from 'express'
 export const router = express.Router()
 import { body, validationResult } from 'express-validator'
 import Comment from '../models/comment.model.js'
 import { verifyToken } from '../middleware/VerifyToken.js'
 
-// comment-list component
+// commentList component, get comments
 router.get(`/`, (request, response) => {
     Comment.find()
         .then((comment) => {
@@ -14,7 +14,7 @@ router.get(`/`, (request, response) => {
         .catch((error) => { response.status(400).json('error: ' + error) })
 })
 
-// post-comment component
+// postComment component, post comment
 router.post('/postcomment', verifyToken, [
     body('username').notEmpty().trim().escape().withMessage('username is required'),
     body('commentDescription').notEmpty().trim().escape().withMessage('comment description is required'),
@@ -42,7 +42,7 @@ router.post('/postcomment', verifyToken, [
         .catch(error => response.status(400).json('error: ' + error));
 });
 
-// comment component
+// comment component, delete comment
 router.delete('/comment', verifyToken, [
     body('id').notEmpty().isMongoId().withMessage('invalid comment id'),
 ], async (request, response) => {
@@ -65,7 +65,7 @@ router.delete('/comment', verifyToken, [
     }
 })
 
-// comment component
+// comment component, edit comment
 router.put('/comment/:id', verifyToken, [
     body('username').notEmpty().withMessage('username is required'),
     body('commentDescription').notEmpty().withMessage('description is required'),
@@ -96,6 +96,38 @@ router.put('/comment/:id', verifyToken, [
     }
     catch (error) {
         response.status(400).json({ error: error.message })
+    }
+})
+
+// comment component, reply comment
+router.post('/comment/:id/reply', verifyToken, [
+    body('username').notEmpty().trim().escape().withMessage('username is required'),
+    body('replyDescription').notEmpty().trim().escape().withMessage('reply description is required'),
+    body('date')
+        .notEmpty().withMessage('date is required')
+        .isISO8601().withMessage('invalid date format'),
+], async (request, response) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() });
+    }
+
+    const commentID = request.params.id
+    const { username, replyDescription, date } = request.body
+
+    try {
+        const updatedComment = await Comment.findByIdAndUpdate(
+            commentID,
+            { $push: { replyComments: { username, replyDescription, date, } } },
+            { new: true }
+        )
+        if (!updatedComment) {
+            return response.status(404).json({ errors: 'Comment not found in db' })
+        }
+        response.status(200).json(updatedComment);
+    }
+    catch (error) {
+        response.status(400).json({ errors: error.message })
     }
 })
 

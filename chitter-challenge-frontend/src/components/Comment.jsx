@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-const Comment = ({ commentListProps, onEdit, onDelete }) => {
+const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) => {
     // retrieve data from comment-list
     const myUsername = commentListProps.username;
     const myCommentDescription = commentListProps.commentDescription;
@@ -12,6 +12,10 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [editedComment, setEditedComment] = useState(myCommentDescription)
+
+    // // reply to comment
+    const [isReplying, setIsReplying] = useState(false)
+    const [replyComment, setReplyComment] = useState('')
 
     // user state
     const loggedInUsername = localStorage.getItem('Username')
@@ -25,7 +29,7 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                     Authorization: `Bearer ${localStorage.getItem('Token')}`,
                 }
             };
-            await axios.put(`http://localhost:8000/comment/${myID}`, {
+            const response = await axios.put(`http://localhost:8000/comment/${myID}`, {
                 // for backend validation
                 username: myUsername,
                 commentDescription: editedComment,
@@ -56,7 +60,9 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                 }
             };
             // delete comment by its ID
-            await axios.delete(`http://localhost:8000/comment`, { data: { id: myID }, headers: config.headers });
+            const response = await axios.delete(`http://localhost:8000/comment`,
+                { data: { id: myID }, headers: config.headers }
+            );
             // notify parent component about deletion
             onDelete(myID);
             console.log(`comment id deleted: ${myID}`)
@@ -66,6 +72,57 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
             console.log(error);
         }
     };
+
+    // const replyCommentPostRequest = async () => {
+    //     // event.preventDefault()
+    //     try {
+    //         const response = await axios.post(`http://localhost:8000/comment`,
+    //             { commentId: comment._id, replyComment, }
+    //         )
+    //         setReplyButton(false)
+    //     }
+    //     catch (error) {
+    //         alert(`Comment - PostRequest error`)
+    //         console.log(error);
+    //     }
+    // }
+
+    const replyCommentPostRequest = async () => {
+        try {
+            if (replyComment.trim() !== '') {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('Token')}`,
+                    }
+                };
+                const response = await axios.post(
+                    `http://localhost:8000/comment/${myID}/reply`,
+                    {
+                        username: loggedInUsername,
+                        replyDescription: replyComment,
+                        date: new Date().toISOString(),
+                    },
+                    config
+                );
+                // add new reply to comment's replyComments array
+                onReply(myID, response.data);
+                setReplyComment('');
+                setIsExpanded(false) // back to non-editable
+            }
+        } catch (error) {
+            alert('Comment - PostRequest error, error adding reply');
+            console.log(error);
+        }
+    }
+
+    const handleReplyClick = () => {
+        setIsReplying(true)
+    }
+
+    const handleCancelReplyComment = () => {
+        setIsReplying(false)
+        setReplyComment('');
+    }
 
     const handleExpandClick = () => {
         setIsExpanded(!isExpanded)
@@ -97,6 +154,8 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                 {myCommentDescription}<br />
                 {myDate.toLocaleString()}<br />
 
+                {/* see replied comments */}
+
                 {isExpanded ? (
                     // expand - true
                     <>
@@ -113,11 +172,27 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                         ) : (
                             // edit = false 
                             <>
-                                {isCurrentUser && (
+                                {isReplying ? (
+                                    // replying = true
                                     <>
-                                        <button onClick={handleEditComment}>Edit</button><br />
-                                        <button onClick={deleteCommentDeleteRequest}>Delete</button><br />
-                                        <button onClick={handleCancelExpandClick}>Cancel</button>
+                                        <textarea
+                                            value={replyComment}
+                                            onChange={(event) => setReplyComment(event.target.value)}
+                                        />
+                                        <button onClick={replyCommentPostRequest} disabled={!replyComment.trim()}>Save reply</button>
+                                        <button onClick={handleCancelReplyComment}>Cancel reply</button>
+                                    </>
+                                ) : (
+                                    // replying = false
+                                    <>
+                                        <button onClick={handleReplyClick}>Reply</button><br />
+                                        {isCurrentUser && (
+                                            <>
+                                                <button onClick={handleEditComment}>Edit</button><br />
+                                                <button onClick={deleteCommentDeleteRequest}>Delete</button><br />
+                                                <button onClick={handleCancelExpandClick}>Cancel</button><br />
+                                            </>
+                                        )}
                                     </>
                                 )}
                             </>
@@ -126,7 +201,7 @@ const Comment = ({ commentListProps, onEdit, onDelete }) => {
                 ) : (
                     // expand = false
                     <>
-                        {isCurrentUser && (
+                        {logInState && (
                             <button onClick={handleExpandClick}>Expand</button>
                         )}
                     </>

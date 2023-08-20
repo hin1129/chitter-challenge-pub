@@ -52,7 +52,7 @@ function App() {
       <Header logInState={logInState} handleLogout={handleLogout} />
 
       <Routes>
-        <Route path="/" element={<CommentList />} />
+        <Route path="/" element={<CommentList logInState={logInState} />} />
 
         <Route
           path="/postcomment"
