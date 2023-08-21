@@ -17,10 +17,13 @@ const CommentList = ({ logInState }) => {
         }
     }
 
-    // rerun server if login state changes
+    // rerun server if login state changes (hide expand button)
     useEffect(() => {
         getCommentListGetRequest()
     }, [logInState])
+    // useEffect(() => {
+    //     getCommentListGetRequest()
+    // }, [commentList])
 
     // edit comment
     const handleEditComment = (editedComment) => {

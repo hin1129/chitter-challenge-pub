@@ -49,6 +49,7 @@ const PostComment = () => {
                 value={commentDescription}
                 onChange={event => setCommentDescription(event.target.value)}
             />
+            <br />
 
             <input type="submit" value="submit" disabled={!commentDescription.trim()} />
         </form>

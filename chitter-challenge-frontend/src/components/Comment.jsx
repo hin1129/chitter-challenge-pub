@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) => {
@@ -7,15 +7,19 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
     const myCommentDescription = commentListProps.commentDescription;
     const myDate = new Date(commentListProps.date)
     const myID = commentListProps._id
+    // reply comments 
+    // const seeCommentListProps = commentListProps
+    const myReplyCommentsArray = commentListProps.replyComments
 
     // expand, edit, cancel
     const [isExpanded, setIsExpanded] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [editedComment, setEditedComment] = useState(myCommentDescription)
 
-    // // reply to comment
+    // replies
     const [isReplying, setIsReplying] = useState(false)
     const [replyComment, setReplyComment] = useState('')
+    const [seeReplyComments, setSeeReplyComments] = useState(false)
 
     // user state
     const loggedInUsername = localStorage.getItem('Username')
@@ -36,6 +40,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                 date: myDate.toISOString()
             }, config)
             setIsEditing(false) // back to non-editable
+            console.log(`comment edited: ${response}`)
             console.log(`comment id edited: ${myID}`)
             console.log(`comment edited: ${editedComment}`)
             // notify parent component about edited comment
@@ -73,20 +78,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
         }
     };
 
-    // const replyCommentPostRequest = async () => {
-    //     // event.preventDefault()
-    //     try {
-    //         const response = await axios.post(`http://localhost:8000/comment`,
-    //             { commentId: comment._id, replyComment, }
-    //         )
-    //         setReplyButton(false)
-    //     }
-    //     catch (error) {
-    //         alert(`Comment - PostRequest error`)
-    //         console.log(error);
-    //     }
-    // }
-
+    // reply to comment
     const replyCommentPostRequest = async () => {
         try {
             if (replyComment.trim() !== '') {
@@ -108,6 +100,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                 onReply(myID, response.data);
                 setReplyComment('');
                 setIsExpanded(false) // back to non-editable
+                window.location.reload()
             }
         } catch (error) {
             alert('Comment - PostRequest error, error adding reply');
@@ -115,6 +108,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
         }
     }
 
+    // group 1
     const handleReplyClick = () => {
         setIsReplying(true)
     }
@@ -144,23 +138,79 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
         setEditedComment(myCommentDescription);
     }
 
+    // group 2 - like/dislike
+    const handleReplyCommentsClick = () => { setSeeReplyComments(true) }
+
+    const handleCancelReplyCommentsClick = () => { setSeeReplyComments(false) }
+
+    const myRepliedComments = (replyCommentsArray) => {
+        if (replyCommentsArray && replyCommentsArray.length > 0) {
+            return (
+                <div>
+                    <h4>Replies:</h4>
+                    {/* <ul> */}
+                    {replyCommentsArray.map((currentReplyCommentsArray, index) => (
+                        <p key={currentReplyCommentsArray._id}>
+                            {currentReplyCommentsArray.username}<br />
+                            {currentReplyCommentsArray.replyDescription}<br />
+                            {currentReplyCommentsArray.date}<br />
+                        </p>
+                    ))}
+                    {/* </ul> */}
+                </div>
+            );
+        }
+        else { return null; }
+    }
+
     return (
         <div >
             <br />
 
-            <p>
+            <div>
+                {/* origin comments */}
                 {myID}<br />
                 {myUsername}<br />
                 {myCommentDescription}<br />
                 {myDate.toLocaleString()}<br />
 
-                {/* see replied comments */}
+                {/* see replies */}
+                {seeReplyComments ? (
+                    <>
+                        <button onClick={handleCancelReplyCommentsClick}>cancel see replies</button>
+                        {myRepliedComments(myReplyCommentsArray)}
+                    </>
+                ) : (
+                    <>
 
+                        {myRepliedComments(myReplyCommentsArray) && (
+                            <>
+                                <button onClick={handleReplyCommentsClick} >see replies</button>
+                                <br />
+                            </>
+                        )}
+                    </>
+                )}
+                {/* <button onClick={handleReplyCommentsClick} disabled={!myRepliedComments(myReplyCommentsArray)}>see replies</button> */}
+
+                {/* expand option */}
                 {isExpanded ? (
                     // expand - true
                     <>
-                        {isEditing ? (
+                        {isEditing && logInState ? (
                             // edit = true
+                            // <>
+                            //     {logInState && (
+                            //         <>
+                            //             <textarea
+                            //                 value={editedComment}
+                            //                 onChange={(event) => setEditedComment(event.target.value)}
+                            //             />
+                            //             <button onClick={editCommentPutRequest} disabled={!editedComment.trim()}>Save Changes</button>
+                            //             <button onClick={handleCancelEditComment}>Cancel Changes</button>
+                            //         </>
+                            //     )}
+                            // </>
                             <>
                                 <textarea
                                     value={editedComment}
@@ -172,7 +222,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                         ) : (
                             // edit = false 
                             <>
-                                {isReplying ? (
+                                {isReplying && logInState ? (
                                     // replying = true
                                     <>
                                         <textarea
@@ -185,8 +235,13 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                                 ) : (
                                     // replying = false
                                     <>
-                                        <button onClick={handleReplyClick}>Reply</button><br />
-                                        {isCurrentUser && (
+                                        {logInState && (
+                                            <>
+                                                <button onClick={handleReplyClick}>Reply</button><br />
+                                            </>
+                                        )}
+                                        {/* <button onClick={handleReplyClick}>Reply</button><br /> */}
+                                        {logInState && isCurrentUser && (
                                             <>
                                                 <button onClick={handleEditComment}>Edit</button><br />
                                                 <button onClick={deleteCommentDeleteRequest}>Delete</button><br />
@@ -206,8 +261,8 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                         )}
                     </>
                 )}
-                {/* end of conditional check */}
-            </p>
+                {/* end of isExpanded check */}
+            </div>
 
         </div >
     )
