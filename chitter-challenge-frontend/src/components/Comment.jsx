@@ -167,7 +167,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
         <div >
             <br />
 
-            <div>
+            <div className='comment-table'>
                 {/* origin comments */}
                 {myID}<br />
                 {myUsername}<br />
@@ -199,25 +199,13 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                     <>
                         {isEditing && logInState ? (
                             // edit = true
-                            // <>
-                            //     {logInState && (
-                            //         <>
-                            //             <textarea
-                            //                 value={editedComment}
-                            //                 onChange={(event) => setEditedComment(event.target.value)}
-                            //             />
-                            //             <button onClick={editCommentPutRequest} disabled={!editedComment.trim()}>Save Changes</button>
-                            //             <button onClick={handleCancelEditComment}>Cancel Changes</button>
-                            //         </>
-                            //     )}
-                            // </>
                             <>
                                 <textarea
                                     value={editedComment}
                                     onChange={(event) => setEditedComment(event.target.value)}
-                                />
-                                <button onClick={editCommentPutRequest} disabled={!editedComment.trim()}>Save Changes</button>
-                                <button onClick={handleCancelEditComment}>Cancel Changes</button>
+                                /><br />
+                                <button onClick={editCommentPutRequest} disabled={!editedComment.trim()}>Save edit</button>
+                                <button onClick={handleCancelEditComment}>Cancel edit</button>
                             </>
                         ) : (
                             // edit = false 
@@ -228,7 +216,7 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                                         <textarea
                                             value={replyComment}
                                             onChange={(event) => setReplyComment(event.target.value)}
-                                        />
+                                        /><br />
                                         <button onClick={replyCommentPostRequest} disabled={!replyComment.trim()}>Save reply</button>
                                         <button onClick={handleCancelReplyComment}>Cancel reply</button>
                                     </>
@@ -257,7 +245,11 @@ const Comment = ({ commentListProps, onEdit, onDelete, onReply, logInState }) =>
                     // expand = false
                     <>
                         {logInState && (
-                            <button onClick={handleExpandClick}>Expand</button>
+                            // <button onClick={handleExpandClick}>Expand</button>
+                            <button onClick={handleExpandClick} class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                                Expand
+                                <i class="fas fa-times"></i>
+                            </button>
                         )}
                     </>
                 )}

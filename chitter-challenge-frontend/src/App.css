@@ -32,7 +32,15 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.comment-table {
+  padding: 1%;
+  border-color: rgb(217, 221, 207);
+  border-style: dashed;
+  border-width: medium;
 }
