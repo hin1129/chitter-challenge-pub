@@ -18,7 +18,7 @@ router.get('/emailverification/:token', async (request, response) => {
         if (!user) {
             return response.status(404).json({ error: 'User not found' });
         }
-        // mark user as verified
+        // mark user as verified, remove token from DB
         user.isEmailVerified = true
         user.emailVerificationToken = undefined
         await user.save()

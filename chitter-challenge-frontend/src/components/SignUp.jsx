@@ -172,10 +172,7 @@ const SignUp = () => {
             <br />
             {verificationLink && (
                 <div>
-                    <p>Signup successful, check your email to verify the account</p>
-                    {/* <p>
-                            click <Link to={verificationLink}>here</Link> to verity your email
-                        </p> */}
+                    <p>Sign up successful, check your email to verify the account</p>
                 </div>
             )}
         </div>
