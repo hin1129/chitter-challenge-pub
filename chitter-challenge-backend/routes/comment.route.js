@@ -101,9 +101,9 @@ router.put('/comment/:id', verifyToken, [
 
 // comment component, reply comment
 router.post('/comment/:id/reply', verifyToken, [
-    body('username').notEmpty().trim().escape().withMessage('username is required'),
-    body('replyDescription').notEmpty().trim().escape().withMessage('reply description is required'),
-    body('date')
+    body('replyUsername').notEmpty().trim().escape().withMessage('username is required'),
+    body('replyCommentDescription').notEmpty().trim().escape().withMessage('reply description is required'),
+    body('replyDate')
         .notEmpty().withMessage('date is required')
         .isISO8601().withMessage('invalid date format'),
 ], async (request, response) => {
@@ -113,12 +113,12 @@ router.post('/comment/:id/reply', verifyToken, [
     }
 
     const commentID = request.params.id
-    const { username, replyDescription, date } = request.body
+    const { replyUsername, replyCommentDescription, replyDate } = request.body
 
     try {
         const updatedComment = await Comment.findByIdAndUpdate(
             commentID,
-            { $push: { replyComments: { username, replyDescription, date, } } },
+            { $push: { replyComments: { replyUsername, replyCommentDescription, replyDate, } } },
             { new: true }
         )
         if (!updatedComment) {
