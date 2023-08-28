@@ -19,7 +19,7 @@ async function sendVerificationEmail(email, token) {
     const verificationLink = `http://localhost:3000/emailverification/${token}`;
 
     const mailOptions = {
-        from: 'hin_1129@hotmail.com',
+        from: process.env.EMAIL_USERNAME,
         to: email,
         subject: 'chitter challenge - verify your email',
         text: `link to verify your email: \n ${verificationLink} `

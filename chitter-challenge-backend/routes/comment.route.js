@@ -1,4 +1,4 @@
-import express, { response } from 'express'
+import express from 'express'
 export const router = express.Router()
 import { body, validationResult } from 'express-validator'
 import Comment from '../models/comment.model.js'
