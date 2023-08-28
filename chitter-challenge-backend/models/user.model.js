@@ -31,6 +31,5 @@ const userSchema = new mongoose.Schema({
     emailVerificationToken: String
 });
 
-// const UserDB = mongoose.model(`user`, userSchema);
-const UserDB = mongoose.model(`user1`, userSchema);
+const UserDB = mongoose.model(`user`, userSchema);
 export default UserDB;

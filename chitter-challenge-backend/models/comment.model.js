@@ -15,7 +15,7 @@ const commentSchema = new mongoose.Schema({
         replyCommentDescription: String,
         replyDate: Date,
     }]
-}, { timestamps: true, }
+}, { timestamps: true, } // createAt/updatedAT in DB
 );
 
 const CommentDB = mongoose.model(`comment`, commentSchema);
